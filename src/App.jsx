@@ -11,9 +11,11 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [locationFilter, setLocationFilter] = useState('all')
   const [expandedRow, setExpandedRow] = useState(null)
-  const [selectedPub, setSelectedPub] = useState(null)
   const [showAddRating, setShowAddRating] = useState(false)
   const [expandedAlumni, setExpandedAlumni] = useState(null)
+  const [showAlumniPubs, setShowAlumniPubs] = useState(null)
+  const [inlineProfile, setInlineProfile] = useState(null)
+  const [newestMember, setNewestMember] = useState(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -66,6 +68,18 @@ function App() {
         const alumniStats = calculateAlumniStats(transformedPubs)
         setAlumniData(alumniStats)
 
+        const validFirsts = alumniStats.filter(a => Number.isFinite(a.firstVisitTs))
+        if (validFirsts.length > 0) {
+          const newest = validFirsts.reduce((acc, curr) => {
+            if (!acc) return curr
+            return curr.firstVisitTs > acc.firstVisitTs ? curr : acc
+          }, null)
+          setNewestMember(newest)
+        } else {
+          setNewestMember(null)
+        }
+
+
         setLoading(false)
       } catch (err) {
         console.error('Fetch error:', err)
@@ -81,21 +95,52 @@ function App() {
   const calculateAlumniStats = (pubs) => {
     const alumniMap = {}
 
+    const normalizeName = (name) => (name || '').trim().toLowerCase()
+    const getRecord = (rawName) => {
+      const key = normalizeName(rawName)
+      if (!key) return null
+      if (!alumniMap[key]) {
+        alumniMap[key] = {
+          displayName: rawName.trim(),
+          submitted: [],
+          attended: [],
+          totalSpent: 0
+        }
+      }
+      // Preserve the first seen cased version
+      if (!alumniMap[key].displayName && rawName.trim()) {
+        alumniMap[key].displayName = rawName.trim()
+      }
+      return alumniMap[key]
+    }
+
+    const getDateValue = (val) => {
+      if (!val || val === 'Unknown') return null
+      if (typeof val === 'number') {
+        const date = new Date((val - 25569) * 86400 * 1000)
+        return isNaN(date.getTime()) ? null : date.getTime()
+      }
+      const date = new Date(val)
+      return isNaN(date.getTime()) ? null : date.getTime()
+    }
+
     pubs.forEach(pub => {
+      const visitTs = getDateValue(pub['Date of Visit'])
       // Handle legacy data with comma-separated alumni (attended but didn't rate)
       const present = pub['Alumni Present']
       if (present) {
         present.split(',').forEach(name => {
-          const trimmed = name.trim()
-          if (trimmed) {
-            if (!alumniMap[trimmed]) {
-              alumniMap[trimmed] = { submitted: [], attended: [], totalSpent: 0 }
-            }
+          const rec = getRecord(name)
+          if (rec) {
             // Only add to attended if they didn't also submit this pub
-            if (pub['Submitted By']?.trim() !== trimmed) {
-              alumniMap[trimmed].attended.push(pub)
+            const submitterKey = normalizeName(pub['Submitted By'])
+            if (submitterKey !== normalizeName(name)) {
+              rec.attended.push(pub)
             }
-            alumniMap[trimmed].totalSpent += pub.Price || 0
+            rec.totalSpent += pub.Price || 0
+            if (visitTs !== null) {
+              rec.firstVisitTs = rec.firstVisitTs === undefined ? visitTs : Math.min(rec.firstVisitTs, visitTs)
+            }
           }
         })
       }
@@ -103,35 +148,41 @@ function App() {
       // Handle new data with individual submitter (they actually rated)
       const submitter = pub['Submitted By']
       if (submitter) {
-        const trimmed = submitter.trim()
-        if (trimmed) {
-          if (!alumniMap[trimmed]) {
-            alumniMap[trimmed] = { submitted: [], attended: [], totalSpent: 0 }
-          }
-          if (!alumniMap[trimmed].submitted.some(p => p.id === pub.id)) {
-            alumniMap[trimmed].submitted.push(pub)
-            alumniMap[trimmed].totalSpent += pub.Price || 0
+        const rec = getRecord(submitter)
+        if (rec && !rec.submitted.some(p => p.id === pub.id)) {
+          rec.submitted.push(pub)
+          rec.totalSpent += pub.Price || 0
+          if (visitTs !== null) {
+            rec.firstVisitTs = rec.firstVisitTs === undefined ? visitTs : Math.min(rec.firstVisitTs, visitTs)
           }
         }
       }
     })
 
-    return Object.entries(alumniMap).map(([name, data]) => {
-      const allVisits = [...data.submitted, ...data.attended]
-      // Average score only from pubs they actually rated (submitted)
-      const scores = data.submitted.filter(v => typeof v['Overall Score'] === 'number').map(v => v['Overall Score'])
-      const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
-      return {
-        'Alumni': name,
-        'Pubs Visited': allVisits.length,
-        'Pubs Rated': data.submitted.length,
-        'Average Pub Score': avgScore,
-        'Attendance Record': allVisits.length / pubs.length,
-        'Money Invested': data.totalSpent,
-        'submitted': data.submitted,
-        'attended': data.attended
-      }
-    }).sort((a, b) => b['Pubs Visited'] - a['Pubs Visited'])
+    return Object.values(alumniMap)
+      .map((data) => {
+        const allVisits = [...data.submitted, ...data.attended]
+        const scoresFromSubmitted = data.submitted
+          .map(v => Number(v['Overall Score']))
+          .filter(Number.isFinite)
+        const scoresFallback = scoresFromSubmitted.length > 0
+          ? scoresFromSubmitted
+          : data.attended
+            .map(v => Number(v['Overall Score']))
+            .filter(Number.isFinite)
+        const avgScore = scoresFallback.length > 0 ? scoresFallback.reduce((a, b) => a + b, 0) / scoresFallback.length : 0
+        return {
+          'Alumni': data.displayName,
+          'Pubs Visited': allVisits.length,
+          'Average Pub Score': avgScore,
+          'Attendance Record': pubs.length ? allVisits.length / pubs.length : 0,
+          'Money Invested': data.totalSpent,
+          'submitted': data.submitted,
+          'attended': data.attended,
+          firstVisitTs: data.firstVisitTs ?? null
+        }
+      })
+      .sort((a, b) => b['Pubs Visited'] - a['Pubs Visited'])
   }
 
   const locations = [...new Set(pubData.map(pub => pub.Location).filter(Boolean))].sort()
@@ -174,6 +225,44 @@ function App() {
     if (rank === 2) return 'rank-silver'
     if (rank === 3) return 'rank-bronze'
     return ''
+  }
+
+  const sortByDateDesc = (pubs) => {
+    return [...pubs].sort((a, b) => {
+      const da = a['Date of Visit'] || ''
+      const db = b['Date of Visit'] || ''
+      return db.localeCompare(da)
+    })
+  }
+
+  const getBestWorstPub = (alumni) => {
+    const source = alumni.submitted.length > 0 ? alumni.submitted : alumni.attended
+    const rated = source
+      .map(p => ({ ...p, _scoreNum: Number(p['Overall Score']) }))
+      .filter(p => Number.isFinite(p._scoreNum))
+    if (rated.length === 0) return { best: null, worst: null }
+    const best = rated.reduce((max, p) => (p._scoreNum > max._scoreNum ? p : max), rated[0])
+    const worst = rated.reduce((min, p) => (p._scoreNum < min._scoreNum ? p : min), rated[0])
+    return { best, worst }
+  }
+
+  const formatTsDate = (ts) => ts ? new Date(ts).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' }) : ''
+
+
+  const getAlumniCategoryAverages = (alumni) => {
+    const categories = [
+      { key: 'Taste', label: 'Taste' },
+      { key: 'Texture', label: 'Texture' },
+      { key: 'Stickage ', label: 'Stickage' },
+      { key: 'Head to Body Ratio', label: 'Head:Body' },
+      { key: 'Pub Character', label: 'Pub Char' }
+    ]
+    const sourcePubs = alumni.submitted.length > 0 ? alumni.submitted : alumni.attended
+    return categories.map(cat => {
+      const rated = sourcePubs.filter(p => typeof p[cat.key] === 'number')
+      const avg = rated.length ? rated.reduce((sum, p) => sum + p[cat.key], 0) / rated.length : 0
+      return { ...cat, avg }
+    })
   }
 
   const handleFormChange = (field, value) => {
@@ -365,7 +454,7 @@ function App() {
     <div className="app">
       <header className="header">
         <h1>Guinness <span className="accent">Rankings</span></h1>
-        <p className="subtitle">Track, rate, and compare Dublin's finest pints</p>
+        <p className="subtitle">Track, rate, and compare Dublin's finest pints.</p>
       </header>
 
       <nav className="tabs">
@@ -444,7 +533,7 @@ function App() {
                     <Fragment key={index}>
                       <tr
                         className={`${getRankClass(rank)} ${isExpanded ? 'expanded' : ''} ${pub._isLocal ? 'local-rating' : ''}`}
-                        onClick={() => setSelectedPub(pub)}
+                        onClick={() => setExpandedRow(isExpanded ? null : index)}
                       >
                         <td className="col-rank">
                           <span className={`rank-badge ${getRankClass(rank)}`}>{rank}</span>
@@ -566,6 +655,14 @@ function App() {
                   <span className="stat-value">{veteran?.Alumni}</span>
                   <span className="stat-detail">{veteran?.['Pubs Visited']} pubs rated</span>
                 </div>
+                {newestMember && (
+                  <div className="stat-card">
+                    <span className="stat-icon">👶</span>
+                    <span className="stat-label">Newest Member</span>
+                    <span className="stat-value">{newestMember.Alumni}</span>
+                    <span className="stat-detail">{formatTsDate(newestMember.firstVisitTs)}</span>
+                  </div>
+                )}
               </div>
             )
           })()}
@@ -590,7 +687,12 @@ function App() {
                     <Fragment key={index}>
                       <tr
                         className={`${getRankClass(rank)} clickable-row`}
-                        onClick={() => setExpandedAlumni(isExpanded ? null : alumni.Alumni)}
+                        onClick={() => {
+                          const next = isExpanded ? null : alumni.Alumni
+                          setExpandedAlumni(next)
+                          setShowAlumniPubs(null)
+                          setInlineProfile(null)
+                        }}
                       >
                         <td className="col-rank">
                           <span className={`rank-badge ${getRankClass(rank)}`}>{rank}</span>
@@ -612,38 +714,140 @@ function App() {
                         <tr className="expanded-row">
                           <td colSpan="6">
                             <div className="alumni-pubs-list">
-                              {alumni.submitted.length > 0 && (
-                                <>
-                                  <h4>Ratings by {alumni.Alumni} ({alumni.submitted.length})</h4>
-                                  <div className="alumni-pubs-grid">
-                                    {alumni.submitted.map((pub, i) => (
-                                      <div key={i} className="alumni-pub-card">
-                                        <div className="alumni-pub-name">{pub['Pub Name']}</div>
-                                        <div className="alumni-pub-details">
-                                          <span className="alumni-pub-location">{pub.Location}</span>
-                                          <span className="alumni-pub-score">{typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}</span>
-                                        </div>
-                                        {pub.Price > 0 && <div className="alumni-pub-price">€{pub.Price.toFixed(2)}</div>}
+                              <div className="profile-cta dual">
+                                <button
+                                  className="profile-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    setShowAlumniPubs(null)
+                                    setInlineProfile(prev =>
+                                      prev === alumni.Alumni ? null : alumni.Alumni
+                                    )
+                                  }}
+                                >
+                                  {inlineProfile === alumni.Alumni ? 'Hide profile' : `Show profile`}
+                                </button>
+                                <button
+                                  className="profile-btn ghost"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    const next = showAlumniPubs === alumni.Alumni ? null : alumni.Alumni
+                                    setShowAlumniPubs(next)
+                                    if (next) setInlineProfile(null) // hide inline profile when viewing all pubs
+                                  }}
+                                >
+                                  All pubs ({alumni['Pubs Visited']})
+                                </button>
+                              </div>
+
+                              {showAlumniPubs === alumni.Alumni && (
+                                <div className="alumni-all-pubs">
+                                  {(() => {
+                                    const combined = [...alumni.submitted, ...alumni.attended]
+                                    const seen = new Set()
+                                    const uniques = combined.filter(pub => {
+                                      const key = `${pub.id || pub['Pub Name']}-${pub['Date of Visit'] || ''}`
+                                      if (seen.has(key)) return false
+                                      seen.add(key)
+                                      return true
+                                    })
+                                    const sorted = sortByDateDesc(uniques)
+                                    return (
+                                      <div className="alumni-pubs-grid">
+                                        {sorted.map((pub, i) => (
+                                          <div key={i} className="alumni-pub-card">
+                                            <div className="alumni-pub-name">{pub['Pub Name']}</div>
+                                            <div className="alumni-pub-details">
+                                              <span className="alumni-pub-location">{pub.Location}</span>
+                                              <span className="alumni-pub-score">
+                                                {typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}
+                                              </span>
+                                            </div>
+                                            {pub.Price > 0 && <div className="alumni-pub-price">€{pub.Price.toFixed(2)}</div>}
+                                            <div className="alumni-pub-date">{formatDate(pub['Date of Visit'])}</div>
+                                          </div>
+                                        ))}
                                       </div>
-                                    ))}
-                                  </div>
-                                </>
+                                    )
+                                  })()}
+                                </div>
                               )}
-                              {alumni.attended.length > 0 && (
-                                <>
-                                  <h4 className="attended-header">Also Present At ({alumni.attended.length})</h4>
-                                  <div className="alumni-pubs-grid attended">
-                                    {alumni.attended.map((pub, i) => (
-                                      <div key={i} className="alumni-pub-card attended">
-                                        <div className="alumni-pub-name">{pub['Pub Name']}</div>
-                                        <div className="alumni-pub-details">
-                                          <span className="alumni-pub-location">{pub.Location}</span>
+
+                              {showAlumniPubs !== alumni.Alumni && inlineProfile === alumni.Alumni && (
+                                <div className="inline-profile-card">
+                                  <div className="profile-metrics">
+                                    <div className="profile-metric">
+                                      <span className="metric-label">Pubs Visited</span>
+                                      <span className="metric-value">{alumni['Pubs Visited']}</span>
+                                    </div>
+                                    <div className="profile-metric">
+                                      <span className="metric-label">Avg Score</span>
+                                      <span className="metric-value">
+                                        {typeof alumni['Average Pub Score'] === 'number'
+                                          ? alumni['Average Pub Score'].toFixed(2)
+                                          : 'N/A'}
+                                      </span>
+                                    </div>
+                                    <div className="profile-metric">
+                                      <span className="metric-label">Attendance</span>
+                                      <span className="metric-value">
+                                        {typeof alumni['Attendance Record'] === 'number'
+                                          ? `${(alumni['Attendance Record'] * 100).toFixed(0)}%`
+                                          : 'N/A'}
+                                      </span>
+                                    </div>
+                                    <div className="profile-metric">
+                                      <span className="metric-label">Money Invested</span>
+                                      <span className="metric-value">
+                                        €{typeof alumni['Money Invested'] === 'number'
+                                          ? alumni['Money Invested'].toFixed(2)
+                                          : '0.00'}
+                                      </span>
+                                    </div>
+                                    {(() => {
+                                      const { best, worst } = getBestWorstPub(alumni)
+                                      return (
+                                        <>
+                                          <div className="profile-metric pub-highlight">
+                                            <span className="metric-label">Favourite Pub</span>
+                                            <span className="metric-value">{best ? best['Pub Name'] : '—'}</span>
+                                            <span className="metric-subvalue">
+                                              {best && Number.isFinite(best._scoreNum) ? best._scoreNum.toFixed(2) : ''}
+                                            </span>
+                                          </div>
+                                          <div className="profile-metric pub-lowlight">
+                                            <span className="metric-label">Least Favourite</span>
+                                            <span className="metric-value">{worst ? worst['Pub Name'] : '—'}</span>
+                                            <span className="metric-subvalue">
+                                              {worst && Number.isFinite(worst._scoreNum) ? worst._scoreNum.toFixed(2) : ''}
+                                            </span>
+                                          </div>
+                                        </>
+                                      )
+                                    })()}
+                                  </div>
+
+                                  <div className="profile-section">
+                                    <h4>Recent pubs with {alumni.Alumni}</h4>
+                                    <div className="alumni-pubs-grid">
+                                      {sortByDateDesc([...alumni.submitted, ...alumni.attended]).slice(0, 4).map((pub, i) => (
+                                        <div key={i} className="alumni-pub-card">
+                                          <div className="alumni-pub-name">{pub['Pub Name']}</div>
+                                          <div className="alumni-pub-details">
+                                            <span className="alumni-pub-location">{pub.Location}</span>
+                                            <span className="alumni-pub-score">
+                                              {typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}
+                                            </span>
+                                          </div>
+                                          {pub.Price > 0 && <div className="alumni-pub-price">€{pub.Price.toFixed(2)}</div>}
+                                          <div className="alumni-pub-date">{formatDate(pub['Date of Visit'])}</div>
                                         </div>
-                                      </div>
-                                    ))}
+                                      ))}
+                                    </div>
                                   </div>
-                                </>
+                                </div>
                               )}
+
                               {alumni.submitted.length === 0 && alumni.attended.length === 0 && (
                                 <p>No pub visits recorded.</p>
                               )}
@@ -946,82 +1150,6 @@ function App() {
         </div>
       )}
 
-      {selectedPub && (
-        <div className="modal-overlay" onClick={() => setSelectedPub(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setSelectedPub(null)}>×</button>
-
-            <div className="modal-header">
-              <h2>{selectedPub['Pub Name']}</h2>
-              <span className="modal-location">{selectedPub.Location}</span>
-            </div>
-
-            <div className="modal-score">
-              <span className="modal-score-value">{typeof selectedPub['Overall Score'] === 'number' ? selectedPub['Overall Score'].toFixed(2) : 'N/A'}</span>
-              <span className="modal-score-label">Overall Score</span>
-            </div>
-
-            <div className="modal-categories">
-              {[
-                { key: 'Taste', label: 'Taste' },
-                { key: 'Texture', label: 'Texture' },
-                { key: 'Stickage ', label: 'Stickage' },
-                { key: 'Head to Body Ratio', label: 'Head:Body Ratio' },
-                { key: 'Pub Character', label: 'Pub Character' }
-              ].map(cat => (
-                <div className="modal-category" key={cat.key}>
-                  <div className="modal-category-bar">
-                    <div
-                      className="modal-category-fill"
-                      style={{ width: `${((selectedPub[cat.key] || 0) / 10) * 100}%` }}
-                    />
-                  </div>
-                  <span className="modal-category-label">{cat.label}</span>
-                  <span className="modal-category-value">{typeof selectedPub[cat.key] === 'number' ? selectedPub[cat.key].toFixed(1) : 'N/A'}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="modal-details">
-              <div className="modal-detail">
-                <span className="modal-detail-label">Price</span>
-                <span className="modal-detail-value">€{typeof selectedPub.Price === 'number' ? selectedPub.Price.toFixed(2) : selectedPub.Price || 'N/A'}</span>
-              </div>
-              <div className="modal-detail">
-                <span className="modal-detail-label">Date Visited</span>
-                <span className="modal-detail-value">{formatDate(selectedPub['Date of Visit'])}</span>
-              </div>
-            </div>
-
-            {selectedPub['Submitted By'] && (
-              <div className="modal-alumni">
-                <span className="modal-detail-label">Rated by</span>
-                <div className="alumni-chips">
-                  <span className="alumni-chip">{selectedPub['Submitted By']}</span>
-                </div>
-              </div>
-            )}
-
-            {selectedPub['Alumni Present'] && (
-              <div className="modal-alumni">
-                <span className="modal-detail-label">Alumni Present</span>
-                <div className="alumni-chips">
-                  {selectedPub['Alumni Present']?.split(',').map((name, i) => (
-                    <span key={i} className="alumni-chip">{name.trim()}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {selectedPub.Comments && (
-              <div className="modal-comments">
-                <span className="modal-detail-label">Comments</span>
-                <p>{selectedPub.Comments}</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

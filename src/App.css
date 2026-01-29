@@ -1630,3 +1630,115 @@ body {
     padding: 2rem 1rem;
   }
 }
+
+/* Alumni profile modal */
+.profile-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.profile-metric {
+  background: #fdfcf7;
+  border: 1px solid #e2dfd2;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.metric-label {
+  display: block;
+  color: #757575;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.metric-value {
+  display: block;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 0.1rem;
+  line-height: 1.2;
+}
+
+.metric-subvalue {
+  display: block;
+  color: #757575;
+  font-size: 0.9rem;
+  margin-top: 0.05rem;
+}
+
+.profile-metric.pub-highlight {
+  background: #eef7ff;
+  border-color: #cfe2ff;
+}
+
+.profile-metric.pub-lowlight {
+  background: #fff5f2;
+  border-color: #ffd8cc;
+}
+
+.profile-section {
+  margin-top: 1.5rem;
+}
+
+.profile-section h3 {
+  margin: 0 0 0.75rem 0;
+}
+
+.profile-cta {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.profile-cta.dual {
+  gap: 0.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.inline-profile-card {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #e6e3d3;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.profile-btn {
+  background: #3434EF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.profile-btn:hover {
+  box-shadow: 0 4px 12px rgba(52, 52, 239, 0.2);
+  transform: translateY(-1px);
+}
+
+.profile-btn.ghost {
+  background: #fff;
+  color: #3434EF;
+  border: 1px solid #d6d5f8;
+}
+
+.profile-btn.ghost:hover {
+  box-shadow: 0 4px 12px rgba(52, 52, 239, 0.1);
+}
+
+.alumni-profile-modal .alumni-pub-date {
+  color: #757575;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
