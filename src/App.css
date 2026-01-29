@@ -426,7 +426,10 @@ body {
 /* Alumni Table */
 .alumni-table .alumni-name {
   font-weight: 600;
-  display: flex;
+}
+
+.alumni-table .alumni-name-inner {
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
@@ -498,6 +501,21 @@ body {
   border-radius: 4px;
   font-weight: 600;
   font-size: 0.8rem;
+}
+
+.attended-header {
+  margin-top: 1.5rem !important;
+  color: #757575 !important;
+  font-weight: 500;
+}
+
+.alumni-pub-card.attended {
+  background: #F8F8F5;
+  border-color: #E6E3D3;
+}
+
+.alumni-pub-card.attended .alumni-pub-name {
+  color: #555;
 }
 
 .alumni-pub-price {

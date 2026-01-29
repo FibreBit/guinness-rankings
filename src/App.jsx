@@ -82,45 +82,54 @@ function App() {
     const alumniMap = {}
 
     pubs.forEach(pub => {
-      // Handle legacy data with comma-separated alumni
+      // Handle legacy data with comma-separated alumni (attended but didn't rate)
       const present = pub['Alumni Present']
       if (present) {
         present.split(',').forEach(name => {
           const trimmed = name.trim()
           if (trimmed) {
             if (!alumniMap[trimmed]) {
-              alumniMap[trimmed] = { visits: [], totalSpent: 0 }
+              alumniMap[trimmed] = { submitted: [], attended: [], totalSpent: 0 }
             }
-            alumniMap[trimmed].visits.push(pub)
+            // Only add to attended if they didn't also submit this pub
+            if (pub['Submitted By']?.trim() !== trimmed) {
+              alumniMap[trimmed].attended.push(pub)
+            }
             alumniMap[trimmed].totalSpent += pub.Price || 0
           }
         })
       }
 
-      // Handle new data with individual submitter
+      // Handle new data with individual submitter (they actually rated)
       const submitter = pub['Submitted By']
       if (submitter) {
         const trimmed = submitter.trim()
-        if (trimmed && !alumniMap[trimmed]?.visits.includes(pub)) {
+        if (trimmed) {
           if (!alumniMap[trimmed]) {
-            alumniMap[trimmed] = { visits: [], totalSpent: 0 }
+            alumniMap[trimmed] = { submitted: [], attended: [], totalSpent: 0 }
           }
-          alumniMap[trimmed].visits.push(pub)
-          alumniMap[trimmed].totalSpent += pub.Price || 0
+          if (!alumniMap[trimmed].submitted.some(p => p.id === pub.id)) {
+            alumniMap[trimmed].submitted.push(pub)
+            alumniMap[trimmed].totalSpent += pub.Price || 0
+          }
         }
       }
     })
 
     return Object.entries(alumniMap).map(([name, data]) => {
-      const scores = data.visits.filter(v => typeof v['Overall Score'] === 'number').map(v => v['Overall Score'])
+      const allVisits = [...data.submitted, ...data.attended]
+      // Average score only from pubs they actually rated (submitted)
+      const scores = data.submitted.filter(v => typeof v['Overall Score'] === 'number').map(v => v['Overall Score'])
       const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
       return {
         'Alumni': name,
-        'Pubs Visited': data.visits.length,
+        'Pubs Visited': allVisits.length,
+        'Pubs Rated': data.submitted.length,
         'Average Pub Score': avgScore,
-        'Attendance Record': data.visits.length / pubs.length,
+        'Attendance Record': allVisits.length / pubs.length,
         'Money Invested': data.totalSpent,
-        'visits': data.visits
+        'submitted': data.submitted,
+        'attended': data.attended
       }
     }).sort((a, b) => b['Pubs Visited'] - a['Pubs Visited'])
   }
@@ -587,8 +596,10 @@ function App() {
                           <span className={`rank-badge ${getRankClass(rank)}`}>{rank}</span>
                         </td>
                         <td className="alumni-name">
-                          <span className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}>▶</span>
-                          {alumni.Alumni}
+                          <span className="alumni-name-inner">
+                            <span className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}>▶</span>
+                            {alumni.Alumni}
+                          </span>
                         </td>
                         <td>{alumni['Pubs Visited']}</td>
                         <td>
@@ -601,19 +612,41 @@ function App() {
                         <tr className="expanded-row">
                           <td colSpan="6">
                             <div className="alumni-pubs-list">
-                              <h4>Pubs Rated by {alumni.Alumni}</h4>
-                              <div className="alumni-pubs-grid">
-                                {alumni.visits.map((pub, i) => (
-                                  <div key={i} className="alumni-pub-card">
-                                    <div className="alumni-pub-name">{pub['Pub Name']}</div>
-                                    <div className="alumni-pub-details">
-                                      <span className="alumni-pub-location">{pub.Location}</span>
-                                      <span className="alumni-pub-score">{typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}</span>
-                                    </div>
-                                    {pub.Price > 0 && <div className="alumni-pub-price">€{pub.Price.toFixed(2)}</div>}
+                              {alumni.submitted.length > 0 && (
+                                <>
+                                  <h4>Ratings by {alumni.Alumni} ({alumni.submitted.length})</h4>
+                                  <div className="alumni-pubs-grid">
+                                    {alumni.submitted.map((pub, i) => (
+                                      <div key={i} className="alumni-pub-card">
+                                        <div className="alumni-pub-name">{pub['Pub Name']}</div>
+                                        <div className="alumni-pub-details">
+                                          <span className="alumni-pub-location">{pub.Location}</span>
+                                          <span className="alumni-pub-score">{typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}</span>
+                                        </div>
+                                        {pub.Price > 0 && <div className="alumni-pub-price">€{pub.Price.toFixed(2)}</div>}
+                                      </div>
+                                    ))}
                                   </div>
-                                ))}
-                              </div>
+                                </>
+                              )}
+                              {alumni.attended.length > 0 && (
+                                <>
+                                  <h4 className="attended-header">Also Present At ({alumni.attended.length})</h4>
+                                  <div className="alumni-pubs-grid attended">
+                                    {alumni.attended.map((pub, i) => (
+                                      <div key={i} className="alumni-pub-card attended">
+                                        <div className="alumni-pub-name">{pub['Pub Name']}</div>
+                                        <div className="alumni-pub-details">
+                                          <span className="alumni-pub-location">{pub.Location}</span>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </>
+                              )}
+                              {alumni.submitted.length === 0 && alumni.attended.length === 0 && (
+                                <p>No pub visits recorded.</p>
+                              )}
                             </div>
                           </td>
                         </tr>
