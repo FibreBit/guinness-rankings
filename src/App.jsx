@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from 'react'
-import * as XLSX from 'xlsx'
+import { supabase } from './supabaseClient'
 import './App.css'
 
 function App() {
@@ -33,23 +33,36 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/rankings.xlsx')
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        const arrayBuffer = await response.arrayBuffer()
-        const workbook = XLSX.read(arrayBuffer, { type: 'array' })
+        // Fetch pub ratings from Supabase
+        const { data: pubRatings, error: pubError } = await supabase
+          .from('pub_ratings')
+          .select('*')
+          .order('overall_score', { ascending: false })
 
-        const pubSheet = workbook.Sheets['Pub Ratings']
-        const pubJson = XLSX.utils.sheet_to_json(pubSheet)
+        if (pubError) throw pubError
 
-        // Load any locally saved ratings
-        const savedRatings = JSON.parse(localStorage.getItem('localRatings') || '[]')
-        setPubData([...pubJson, ...savedRatings])
+        // Transform Supabase column names to match app's expected format
+        const transformedPubs = pubRatings.map(row => ({
+          'Pub Name': row.pub_name,
+          'Location': row.location,
+          'Price': row.price,
+          'Date of Visit': row.date_of_visit,
+          'Alumni Present': row.alumni_present,
+          'Taste': row.taste,
+          'Texture': row.texture,
+          'Stickage ': row.stickage,
+          'Head to Body Ratio': row.head_to_body_ratio,
+          'Pub Character': row.pub_character,
+          'Overall Score': row.overall_score,
+          'Comments': row.comments,
+          'id': row.id
+        }))
 
-        const alumniSheet = workbook.Sheets['Alumni Stats']
-        const alumniJson = XLSX.utils.sheet_to_json(alumniSheet)
-        setAlumniData(alumniJson)
+        setPubData(transformedPubs)
+
+        // Calculate alumni stats from pub data
+        const alumniStats = calculateAlumniStats(transformedPubs)
+        setAlumniData(alumniStats)
 
         setLoading(false)
       } catch (err) {
@@ -61,6 +74,39 @@ function App() {
 
     fetchData()
   }, [])
+
+  // Calculate alumni statistics from pub ratings
+  const calculateAlumniStats = (pubs) => {
+    const alumniMap = {}
+
+    pubs.forEach(pub => {
+      const present = pub['Alumni Present']
+      if (present) {
+        present.split(',').forEach(name => {
+          const trimmed = name.trim()
+          if (trimmed) {
+            if (!alumniMap[trimmed]) {
+              alumniMap[trimmed] = { visits: [], totalSpent: 0 }
+            }
+            alumniMap[trimmed].visits.push(pub)
+            alumniMap[trimmed].totalSpent += pub.Price || 0
+          }
+        })
+      }
+    })
+
+    return Object.entries(alumniMap).map(([name, data]) => {
+      const scores = data.visits.filter(v => typeof v['Overall Score'] === 'number').map(v => v['Overall Score'])
+      const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
+      return {
+        'Alumni': name,
+        'Pubs Visited': data.visits.length,
+        'Average Pub Score': avgScore,
+        'Attendance Record': data.visits.length / pubs.length,
+        'Money Invested': data.totalSpent
+      }
+    }).sort((a, b) => b['Pubs Visited'] - a['Pubs Visited'])
+  }
 
   const locations = [...new Set(pubData.map(pub => pub.Location).filter(Boolean))].sort()
   const existingPubNames = [...new Set(pubData.map(pub => pub['Pub Name']).filter(Boolean))].sort()
@@ -104,7 +150,7 @@ function App() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const handleSubmitRating = (e) => {
+  const handleSubmitRating = async (e) => {
     e.preventDefault()
 
     const overallScore = (
@@ -115,6 +161,32 @@ function App() {
       parseFloat(formData.pubCharacter)
     ) / 5
 
+    // Save to Supabase
+    const { data, error } = await supabase
+      .from('pub_ratings')
+      .insert([{
+        pub_name: formData.pubName,
+        location: formData.location,
+        price: parseFloat(formData.price) || null,
+        date_of_visit: formData.date,
+        alumni_present: formData.alumniPresent,
+        taste: parseFloat(formData.taste),
+        texture: parseFloat(formData.texture),
+        stickage: parseFloat(formData.stickage),
+        head_to_body_ratio: parseFloat(formData.headToBody),
+        pub_character: parseFloat(formData.pubCharacter),
+        overall_score: overallScore,
+        comments: formData.comments
+      }])
+      .select()
+
+    if (error) {
+      console.error('Error saving rating:', error)
+      setError(`Failed to save: ${error.message}`)
+      return
+    }
+
+    // Add to local state with transformed format
     const newRating = {
       'Pub Name': formData.pubName,
       'Location': formData.location,
@@ -128,16 +200,11 @@ function App() {
       'Pub Character': parseFloat(formData.pubCharacter),
       'Overall Score': overallScore,
       'Comments': formData.comments,
-      '_isLocal': true
+      'id': data[0]?.id
     }
 
-    // Save to localStorage
-    const savedRatings = JSON.parse(localStorage.getItem('localRatings') || '[]')
-    savedRatings.push(newRating)
-    localStorage.setItem('localRatings', JSON.stringify(savedRatings))
-
-    // Update state
     setPubData(prev => [...prev, newRating])
+    setAlumniData(calculateAlumniStats([...pubData, newRating]))
 
     // Reset form
     setFormData({

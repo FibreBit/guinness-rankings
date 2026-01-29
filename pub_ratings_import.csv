@@ -1,0 +1,240 @@
+id,created_at,pub_name,location,price,date_of_visit,alumni_present,taste,texture,stickage,head_to_body_ratio,pub_character,overall_score,comments
+1,2026-01-29T19:15:29.256Z,John Kehoe's,South (City),5.9,2022-08-12,"Adam, Cam, Fred, Martin, Saul",9.3,9.4,8.3,9,8.8,8.96,
+2,2026-01-29T19:15:29.256Z,The Long Hall,South (City),5.9,2022-06-30,"Cam, Fred, Kevin, Martin, Manus, Saul",8.3,8.3,7.8,8.8,8.8,8.4,
+3,2026-01-29T19:15:29.256Z,The Palace Bar,South (City),5.9,,"Alan, Cameron, Saul, Sophie",8.4,8.3,7.9,8.9,8,8.3,"""What an excellent pint. Delish creamy pint and a lovely pub atmosphere which I would like to grow old in. A nice dublin pub"" - Sophie, ""coffee"" - Saul"
+4,2026-01-29T19:15:29.256Z,The Confession Box,North (City),5.5,2022-07-23,"Adam, Cam, Martin, Saul",8.8,9.1,7.4,7.8,8.2,8.26,
+5,2026-01-29T19:15:29.256Z,The Stag's Head,South (City),5.9,2022-06-30,"Cam,  Fred, Kevin, Martin, Saul",8.7,8.4,7.6,7.7,8.6,8.2,
+6,2026-01-29T19:15:29.257Z,Chaplins,South (City),5.5,2022-06-23,"Alan, Cam, Martin, Saul",8,7.9,8.6,8.1,8,8.12,"Smooth yet slightly watery towards the end. A lovely sweet smell of coffee, a tad cold but excellent domage and a nice firm head. The stickage did wonders for the score of this pint and taste brought it up big time. Chaplin's is a lovely intimate vibe perfect for a few quiet ones with the lads in the evening and a few more lively pints at night. Staff are always friendly and you can tell the owners care about the place."
+7,2026-01-29T19:15:29.257Z,Bowe's,South (City),5.7,,"Adam, Cameron, Matthew, Saul, Sophie",8.4,8.3,8,8.1,7.8,8.12,"""nice tasty Guinness"" - Matthew"
+8,2026-01-29T19:15:29.257Z,Mooney's,North (City),5.7,2022-07-23,"Adam, Cam, Martin, Saul",8.2,7.9,8.8,7.8,7.8,8.1,
+9,2026-01-29T19:15:29.257Z,Uncle Tom's Cabin,South,5.5,,"Manus, Mark, Martin, Matthew, Saul",8,8,7.7,8.8,8,8.1,"""from the looks of it every man here had the name Mick"" - Martin, ""a cabin of dreams"" - Matthew, ""funny place"" - Manus"
+10,2026-01-29T19:15:29.257Z,The Manhattan (Raheny),North,5.9,2022-11-11,"Cam, Mark, Martin, Podge",8.5,8,7.8,8,8.1,8.08,
+11,2026-01-29T19:15:29.257Z,Annesley House ,North,4.8,2022-11-29,"Cam, Martin, Matthew, Podge, Saul, Sophie",8.6,8.2,7.7,8.2,7.6,8.06,"""A truly Irish House.
+Annesley House.
+Crown Moldings.
+Wall Molding.
+Bar man drinking.
+Old man sinking.
+A happy place. 
+A cheap pint.
+A great find."" - Martin"
+12,2026-01-29T19:15:29.257Z,Paddy Kearney's,South (City),,2024-12-08,"Alan, Kevin, Martin, Saul",8.2,7.9,8.4,7.4,8.4,8.06,"""Ooh Ah Up The"" - Martin, ""RA"" - Alan"
+13,2026-01-29T19:15:29.257Z,Patrick Carthy & Sons,North,5.4,2022-10-03,"Alan, Martin, Manus, Saul",8.6,8.5,8.9,8,6.1,8.02,
+14,2026-01-29T19:15:29.257Z,The Dame Tavern,South (City),5.8,2022-06-30,"Cam, Kevin, Martin, Manus, Saul",7.5,7.8,7.5,8.1,9.1,8,
+15,2026-01-29T19:15:29.257Z,Millmount House ,North,5,2022-09-18,"Alan, Matthew, Podge, Saul",8.3,8.1,8.5,7.7,7.4,8,
+16,2026-01-29T19:15:29.257Z,The Glimmerman ,North,5.5,2022-08-10,"Martin, Matthew, Podge, Saul",7.5,7.7,7.9,7.9,8.7,7.94,
+17,2026-01-29T19:15:29.257Z,Walsh's ,North,5.6,2022-08-10,"Martin, Matthew, Podge, Saul",8.5,7.8,7.1,8.4,7.9,7.94,
+18,2026-01-29T19:15:29.257Z,Glynns,North (City),6.25,2025-09-13,"Adam, Cam, Kevin, Mark, Martin, Saul",7.9,7.7,7.3,7.7,9,7.92,"""the most dublin pub of all time"" - Saul, ""the strippers have arrived"" - Cam, ""chlorine stench. Sour cranberries"" - Martin, ""the locals were so sweet"" - Adam"
+19,2026-01-29T19:15:29.257Z,O'Loughlin's,South,5,2022-10-15,"Mark, Martin, Matthew, Podge, Saul, Sophie",7.7,7.9,8.8,7.6,7.5,7.9,
+20,2026-01-29T19:15:29.257Z,Doyle's,South (City),5.9,2022-07-13,"Adam, Cam, Fred, Mark, Martin, Saul",7.7,7.7,7.6,7.9,8.4,7.86,
+21,2026-01-29T19:15:29.257Z,Harry Byrne's,North,5.7,2022-09-22,"Cam, Matthew, Podge, Saul, Sophie",7.9,7.6,7.6,8.2,8,7.86,
+22,2026-01-29T19:15:29.257Z,Kitty Kiernan's,North,5.3,2022-10-20,"Adam, Cam, Mark, Martin, Podge, Saul",8.4,7.9,6.8,8.4,7.7,7.84,
+23,2026-01-29T19:15:29.257Z,The Beachcomber,North,5.6,2022-10-20,"Cam, Mark, Martin, Saul",7.9,7,8.6,8.3,7.3,7.82,
+24,2026-01-29T19:15:29.257Z,McNeill's (Howth),North,5.5,,"Adam, Martin, Matthew, Saul",7.9,7.9,7.8,8.1,7.4,7.82,"""Alan is an idiot"" - Matthew, ""Got Sharked"" - Martin"
+25,2026-01-29T19:15:29.257Z,Mary's,South (City),5.9,2022-08-21,"Adam, Fred, Martin, Saul",8.4,7.8,7.2,7,8.7,7.82,
+26,2026-01-29T19:15:29.257Z,The Flowing Tide ,North (City)      ,5.8,2022-11-24,"Adam, Cam, Mark, Martin",7.9,7.8,7.5,7.7,8.2,7.82,
+27,2026-01-29T19:15:29.257Z,Grogan's,South (City),5.95,2022-11-13,"Adam, Martin, Podge, Saul",8.1,8.1,7.6,7.6,7.6,7.8,
+28,2026-01-29T19:15:29.257Z,Smyths,North,5.75,2023-12-10,"Alan, Fred, Kevin, Martin, Matthew, Padraig, Saul",7.5,7.8,7.4,7.7,8.5,7.78,"""Is that your jacket 🙄"" - Martin, ""Hand dryer not branded but powerful"" - Padraig"
+29,2026-01-29T19:15:29.257Z,Kavanagh's (Clontarf),North,5.5,2022-12-12,"Cam, Martin, Matthew, Podge, Saul",7.9,7.7,7.7,7.8,7.8,7.78,"""that'll do"" - Martin"
+30,2026-01-29T19:15:29.257Z,The Boar's Head,North (City),6.6,2023-10-20,"Martin, Matthew, Saul, Sophie",8,7.4,7.5,8.1,7.8,7.76,"""Capel st giving me that Asian flush (I did big poo after noodles)"" - Martin, ""The tourist table is the best spot in this place"" - Sophie"
+31,2026-01-29T19:15:29.257Z,Horse and Hound,North,5.9,2023-12-10,"Alan, Fred, Kevin, Martin, Matthew, Padraig, Saul",7.8,7.4,7.4,8,8.2,7.76,"""They got KEVIN O’SULLIVAN to play. The KEVIN O’SULLIVAN. Yeah, that KEVIN O’SULLIVAN, the one they you’re thinking about. Famous singer KEVIN O’SULLIVAN. Shedding on the electric, KEVIN O’SULLIVAN. Not Adam O’Sullivan. KEVIN O’SULLIVAN"" - Martin, ""atc cooking styll"" - Padraig"
+32,2026-01-29T19:15:29.257Z,The Old Punch Bowl,South,6.5,2024-02-04,"Adam, Fred, Kevin, Mark, Martin, Padraig, Saul, Sophie",7.6,7.2,7.7,8,8.3,7.76,"""Good decor and hagrid core"" - Padraig"
+33,2026-01-29T19:15:29.257Z,The Bridge Tavern,North,4.9,,"Alan, Cameron, Mark, Martin, Saul",7.5,7.1,7.3,8.6,8.2,7.74,"""u-n-i t-e-d United are the team for me"" - Saul, ""call an ambulance but not for me"" - Martin"
+34,2026-01-29T19:15:29.257Z,Cassidy's (Westmoreland),South (City),5.8,2022-07-13,"Adam, Fred, Martin, Saul",7.1,7.7,7.9,7.6,8.3,7.72,
+35,2026-01-29T19:15:29.257Z,Dudley's,South (City),6.6,2024-11-22,"Cam, Fred, Kevin, Martin, Ruairí, Saul",7.8,7.5,7.4,7.6,8.3,7.72,"""Walking stick theory wouldn't fly somewhere this woke"" - Martin. Note: Ruairí failed to rate H2B and Kevin failed to rate stickage"
+36,2026-01-29T19:15:29.257Z,Mulligan's,South (City),5.9,2022-06-23,"Alan, Cam, Martin, Saul",8.4,8.4,6.3,7.2,8.3,7.72,"A regular haunt of mine, I know the barmen well and its been a Farrelly pub for generations. The atmosphere is always fantastic, just a classic of Dublin. The pint was smooth, creamy and well balanced. Nice temperature and deliciously malty for whatever reason, however it wasn't quite as good as expected, I've had better in there. The stickage was very poor and the head to body ratio wasn't up to the standards we've come to expect from Mulligan's"
+37,2026-01-29T19:15:29.257Z,Ukiyo**,South (City),6,2022-09-26,"Martin, Manus, Matthew, Sophie",8.4,7.9,6.8,8,7.5,7.72,
+38,2026-01-29T19:15:29.257Z,Meagher's (Fairview),North,,,"Cameron, Mark, Padraig, Saul",7.3,7.3,8,7.9,8.1,7.72,"""queit"" - Saul, ""Dómhnál is a crack head"" - Padraig"
+39,2026-01-29T19:15:29.257Z,Harkin's,South (City),5.4,,"Mark, Martin, Matthew, Saul",7.9,7.7,7,8.1,7.9,7.72,"Possibly invalid rating as Matthew failed to rate stickage. ""cosy vibe, feels like a Northside job. Smells like delicious"" - Martin, ""lovely stuff"" - Saul, ""oops forgot to send"" - Matthew"
+40,2026-01-29T19:15:29.257Z,The Foggy Dew,South (City),,,"Adam, Cameron, Martin, Saul",8,7.5,7.3,7.6,8.2,7.72,
+41,2026-01-29T19:15:29.257Z,Devitt's,South (City),5.7,2022-10-25,"Cam, Mark, Martin, Saul",7.6,7.5,8.3,7.4,7.7,7.7,
+42,2026-01-29T19:15:29.257Z,Dunphy's,South,5.7,2022-10-15,"Cam, Mark, Martin, Matthew, Manus, Podge, Sophie",7.9,7.9,6.4,7.6,8.6,7.68,"""""CHEAP.  CHEAP."" Goes the new born chick. I feel new born, new born as the birds that cry their cry. ""CHEAP. CHEAP"" they screech. I screech for the CHEAP pint. The CHEAP pint screech's for me. She is my cuckoo chick. She is my cuckoo newborn. A new baby given to me by elemental forces, forces of nature. I must provide"" - Martin"
+43,2026-01-29T19:15:29.257Z,Noctor's,North (City),5.5,2025-11-02,"Adam, Fred, Kevin, Rebecca",7,7.3,8.8,8.5,6.8,7.68,"""I would not go here if I was a migrant or gay. This is by far the dodgiest pub I've been to in Dublin, there's broken glass on the walls and Ireland flags outside."" - Kevin, ""toilets have no lid and woman beside me was groaning and shitting loudly"" - Rebecca"
+44,2026-01-29T19:15:29.257Z,Madigan's (O Connell St),North (City),6.3,,"Alan, Martin, Matthew, Saul",7.5,7.5,7.2,8.3,7.9,7.68,"""happy birthday Angela"" - Matthew, ""tooooooones"" - Saul"
+45,2026-01-29T19:15:29.257Z,Kennedy's,North,5.8,2022-09-18,"Alan, Matthew, Podge, Saul",7.9,6.8,7.4,7.8,8.4,7.66,
+46,2026-01-29T19:15:29.257Z,Pebble Beach,North,5.7,2022-10-30,"Alan, Cam, Mark, Matthew, Podge, Saul, Sophie",7.6,7.6,7.4,7.6,8.1,7.66,
+47,2026-01-29T19:15:29.257Z,Fowlers,North,6.6,2023-12-10,"Alan, Fred, Kevin, Martin, Matthew, Padraig",7.9,7.7,7.9,7.8,7,7.66,"""A strange mix of classy and tacky"" - Martin, ""Fantastic hand dryer"" - Padraig"
+48,2026-01-29T19:15:29.257Z,Paddy Cullen's,South,6.9,2024-12-18,"Alan, Cam, Kevin, Manus, Mark, Martin, Matthew, Saul, Sadhbh N, Sophie",7.6,7.6,7.3,7.6,8.2,7.66,"""delicious snug keeps me warm in the soul"" - Cam, ""Merry Christmas"" - Sophie, ""Robocop"" - Martin, ""Pringles"" - Sadhbh N"
+49,2026-01-29T19:15:29.257Z,Grand Central,North (City),5.8,,"Alan, Martin, Matthew, Saul",7.7,7.8,7.9,8.1,6.8,7.66,"""swords security are going ham"" - Matthew"
+50,2026-01-29T19:15:29.257Z,Toners,South (City),6.6,2023-12-07,"Adam, Kevin, Martin, Saul",7.8,7.7,7.2,7.9,7.6,7.64,"""where’s ms toner 😉"" - Martin"
+51,2026-01-29T19:15:29.257Z,Gaffney's,North,5.6,2022-11-29,"Cam, Martin, Matthew, Podge, Saul, Sophie",7.5,7.7,7.6,7.7,7.7,7.64,"""my mam drinks her so much that the barmen asks where she is if she hasn't been that week"" - Martin"
+52,2026-01-29T19:15:29.257Z,The Old Stand,South (City),6.4,2023-07-20,"Adam, Kevin, Mark, Saul",8,7.6,7.1,8.1,7.4,7.64,"""decent spot"" - Saul"
+53,2026-01-29T19:15:29.257Z,Fagan's,North,5.7,2022-09-18,"Alan, Matthew, Podge, Saul",8,7.3,7.6,8,7.2,7.62,
+54,2026-01-29T19:15:29.257Z,Cusack's,North,5.2,2022-11-29,"Cam, Martin, Matthew, Podge, Saul, Sophie",8,7.8,7.4,7.1,7.8,7.62,"""Turned to potato fields but not born in them,
+Was I, an Irish man
+Born away from them I hear your cry?
+Was I an Irish man?
+However, I, a city slicker, have adopted and cradled this babe.
+Showered her in vinegary goodness,
+Showed her, her true potential.
+Filfulled her final form, her fine foilly finish.
+Forced her beyond my lips.
+Cradled her in my palm.
+Force and cradle. 
+You call me Newton now.  But you haven't accessed the gravity of the situation. Potatoes can't fall on my head."" - Martin"
+55,2026-01-29T19:15:29.257Z,Kilmardinny Inn ,North,5.2,2022-06-25,"Adam, Fred, Kevin, Saul",8.4,7.5,7.4,8,6.7,7.6,"Very good clean taste, shame it lacked slightly in stickage because it was a fine tasting pint. Nice creamy pint with a solid texture, maybe a bit watery towards the end. Pub atmosphere was popping (Tá an t-atmaisféar leictreach). Everyone except Fred enjoyed themselves, barman was joking with Adam and there was a great local atmosphere about the place. We got picked on by the regulars but in a banter-y Irish way. This was during a quarter final in a GAA pub so we may have to revisit soon on a not GAA day. Low price was a plus."
+56,2026-01-29T19:15:29.260Z,The Snug,South (City),4.7,2022-06-30,"Cam, Fred, Kevin, Martin, Manus, Saul",8,7.7,7.1,7.8,7.4,7.6,
+57,2026-01-29T19:15:29.260Z,Gibneys,North,6.8,2023-12-10,"Alan, Kevin, Martin, Matthew, Padraig, Saul",7.5,7.5,7.4,7.9,7.6,7.58,"Had separate bars with difference prices (€7.00 and €6.60). Price is averaged between them. ""4 legs good, 1 leg better"" - Martin, ""Worst hand dryer but nice pub"" - Padraig"
+58,2026-01-29T19:15:29.260Z,Cassidy's (Camden),South (City),5.7,2022-10-25,"Cam, Mark, Martin, Saul",7.7,6.9,8.7,7.7,6.8,7.56,
+59,2026-01-29T19:15:29.260Z,McGrattans,South (City),5.9,2023-12-07,"Adam, Kevin, Martin, Saul",7.4,7,7,7.7,8.7,7.56,"""SEAN DYCHE MASTERCLASS"" - Martin"
+60,2026-01-29T19:15:29.260Z,Fitzgeralds of Sandycove,South,,2025-06-27,"Cam, Martin, Matthew, Saul",7.5,7.2,7.2,8.2,7.7,7.56,"""I was promised 9 euro meals"" - Martin"
+61,2026-01-29T19:15:29.260Z,Padraig Pearse,South (City),5,2022-11-13,"Adam, Martin, Podge, Saul",7.5,7.2,7.3,8.3,7.4,7.54,
+62,2026-01-29T19:15:29.260Z,The Hut,North,5.4,2022-12-23,"Adam, Matthew, Padraig, Saul",7.5,7.1,7.4,7.9,7.8,7.54,"Sophie's rating removed as she failed to rate stickage. ""A lovely pub atmosphere, I would like to be an old man here"" - Sophie, ""lovely"" - Saul, ""lil bit small"" - Padraig"
+63,2026-01-29T19:15:29.260Z,Doheny & Nesbitt,South (City),6.7,2023-12-07,"Adam, Kevin, Martin, Saul",8,7.7,7.2,7.4,7.4,7.54,"""spurs are wining"" - Martin"
+64,2026-01-29T19:15:29.260Z,Brogans,South (City),6.7,2024-12-08,"Alan, Kevin, Martin, Saul, Sophie",7.8,7.8,6.1,8,7.9,7.52,"""nice old man pub"" - Alan, ""This pub is odorous"" - Kevin, ""Arkbar of Dame St"" - Martin"
+65,2026-01-29T19:15:29.260Z,O'Donoghue's (Merrion Row),South (City),6.6,2023-12-07,"Adam, Kevin, Martin, Saul",7.1,7.6,7.6,7.5,7.8,7.52,
+66,2026-01-29T19:15:29.260Z,Cleary's,North (City),5.8,2024-10-04,"Cam, Fred, Kevin, Mark, Sadhbh N, Saul, Sophie",7.8,7.2,6.9,7.9,7.7,7.5,"""Lovely pub"" - Sophie, ""I enjoyed the second mysterious room"" - Sadhbh N"
+67,2026-01-29T19:15:29.260Z,Swift's,South (City),6.2,2024-11-22,"Cam, Fred, Kevin, Martin, Saul",7.6,7.4,6.6,7.8,8.1,7.5,"""these lamps"" - Cam, ""Walking stick theory wouldn't fly somewhere this woke"" - Martin"
+68,2026-01-29T19:15:29.260Z,The Lark Inn,South (City),5,2024-11-22,"Cam, Fred, Kevin, Martin, Ruairí, Saul",7.7,7.1,7.5,7.7,7.5,7.5,"""I'm amazed this pub exists. Feels like it should be in Kilbarrack or Raheny but it's in the Liberties"" - Kevin, ""Lark Inn is Ireland for the Irish protest vibes"" - Ruairi, ""Junkies by the door, blubber in the corner, 5 quid pints, a real Dublin number"" - Martin"
+69,2026-01-29T19:15:29.260Z,Connolly's (Sheds),North,5.5,2022-10-30,"Alan, Cam, Matthew, Podge, Saul",7.9,7.7,6.4,7.9,7.4,7.46,
+70,2026-01-29T19:15:29.260Z,Arthur's Blues and Jazz Club,South (City),6.75,2024-11-22,"Cam, Fred, Martin, Saul",7.6,7.3,6.8,8.2,7.4,7.46,"""needlessly large disoranno is a safety hazard"" - Cam
+
+""A pint with influences ranging from Led Zeppelin to Wayne Shorter, including Miles Davis, Hendrix, and Satie.
+
+""Farrelly glides through the pint with a superb sense of confidence…"" - Jazz Times
+
+""Bullshit expert Phelan, capitalizes on his considerable gifts as an improviser, interpreter, and sonic trailblazer…"" - Downbeat Magazine"" - Martin"
+71,2026-01-29T19:15:29.260Z,Clarke's,North,5.7,2023-12-16,"Fred, Kevin, Martin, Padraig, Saul, Sophie",7.7,7.6,7.3,8,6.6,7.44,"""UTFR"" - Padraig"
+72,2026-01-29T19:15:29.260Z,Harbourmaster,North (City),6.7,,"Adam, Fred, Martin, Saul",7.8,7.4,7.4,7.6,7,7.44,"""this pub feels like it should be in Howth, not beside connolly"" - Saul, ""€6.70? Come on lads, it’s next to Junkie HQ. Man’s gotta eat"" - Martin"
+73,2026-01-29T19:15:29.260Z,The 1884,North,5.8,2022-07-09,"Adam, Fred, Kevin, Martin",7.1,6.6,8.1,7.9,7.5,7.44,
+74,2026-01-29T19:15:29.260Z,Bar Rua,South (City),6.6,2023-07-20,"Adam, Mark, Matthew, Saul",7.8,7.3,7.4,7.4,7.1,7.4,"""nice"" - Saul"
+75,2026-01-29T19:15:29.260Z,Harbour Bar,North,6.4,2025-01-19,"Cam, Matthew, Saul, Sophie",7.2,7.3,6.9,7.3,8.3,7.4,"""Pub fire [heart eyes emoji x 3]"" - Sophie"
+76,2026-01-29T19:15:29.260Z,Clarke's City Arms,North,5.9,2025-07-19,"Adam, Cam, Kevin, Mark, Martin, Matthew, Saul",7.8,7.4,6.3,7.5,7.8,7.36,"""Willa whites chocolate homunculus"" - Martin"
+77,2026-01-29T19:15:29.260Z,Hedigans (Brian Boru),North,,2022-12-23,"Cameron, Padraig, Saul, Sophie",7.5,7.3,8,6.9,6.9,7.32,"""Adam is rattled"" - Saul, ""Here for 12 pubs but feels like a place I'd bring fam to"" - Sophie, ""martin is a menace"" - Padraig"
+78,2026-01-29T19:15:29.260Z,The Ardlea Inn,North,,2023-11-25,"Adam, Fred, Kevin, Martin, Saul",7.9,7.6,7.7,6.7,6.7,7.32,"""big black yoke on my glass, might have improved the taste cause it tested pretty pretty good"" - Martin"
+79,2026-01-29T19:15:29.260Z,Duffys,North,6.1,2023-12-10,"Alan, Fred, Kevin, Martin, Matthew, Padraig, Saul",7.6,7.4,6.6,7.7,7.3,7.32,"""Beating Newcastle isn't for everyone"" - Martin, ""Hand dryer not as good but still lovely"" - Padraig"
+80,2026-01-29T19:15:29.260Z,The Summit Inn,North,6.4,2025-01-19,"Cam, Matthew, Saul, Sophie",7.7,7.5,6.8,7.6,7,7.32,"""delicious veggie burger"" - Sophie"
+81,2026-01-29T19:15:29.260Z,Hynes' Bar,North,6.4,2025-07-19,"Adam, Cam, Kevin, Mark, Martin, Matthew, Saul",7.5,6.8,6.7,7.6,8,7.32,"""food is unreal"" - Adam, """"Every man's dream is to turn a lesbian straight"""" - Saul, ""A pub that allows dogs is either the wokest or least woke pub you've ever been to"" - Martin"
+82,2026-01-29T19:15:29.260Z,The International ,South (City),6.5,,"Adam, Cameron, Fred, Mark, Saul",7.1,7.8,6.6,7.8,7.3,7.32,"""howdy cowboy"" - Adam, ""spenny"" - Saul, ""he poured my pint into a used unwashed glass i saw him just pick up"" - Mark"
+83,2026-01-29T19:15:29.260Z,The Bar (Guinness)**,South (City),,,"Adam, Cameron, Fred, Saul",7.7,7.5,6.5,7.6,7.3,7.32,"""Everton supporters club"" - Saul"
+84,2026-01-29T19:15:29.260Z,Meagher's (Quays),North (City),6,2022-11-24,"Adam, Cam, Mark, Martin",7.3,7.1,7,7.7,7.4,7.3,
+85,2026-01-29T19:15:29.260Z,The Goblet,North,6,2023-11-25,"Adam, Fred, Kevin, Martin, Saul",7.3,7.1,7,7.6,7.5,7.3,"""Preston is gud"" - Martin"
+86,2026-01-29T19:15:29.260Z,The Lower Deck,South (City),6.15,2024-12-07,"Cam, Fred, Kevin, Mark, Matthew, Sadhbh D, Sadhbh N, Saul, Sophie",7.5,7.3,6.1,7.8,7.8,7.3,
+87,2026-01-29T19:15:29.260Z,The Hideout House,North,5.3,2025-11-16,"Alan, Cam, Kevin, Martin, Saul, Sophie SB",7.3,7.7,7.2,8.1,6.2,7.3,"""kinda feels like an American sports bar"" - Kevin, ""dead pintmen"" - Martin, ""that man was almost horizontal"" - Alan"
+88,2026-01-29T19:15:29.260Z,The Ginger Man,South (City),6.6,,"Adam, Kevin, Matthew, Saul",7.5,7.3,6.8,7,7.9,7.3,
+89,2026-01-29T19:15:29.260Z,Dundrum House,South,5.8,,"Manus, Matthew, Mark, Martin, Saul",7.7,7.1,7.2,7.9,6.6,7.3,"""Saul is landlord scum"" - Martin, ""standing up is sad when there's a seat beside me"" - Matthew, ""pint"" - Saul, ""possibly the most generic pub ever, it’s like it was created for a movie set"" - Manus"
+90,2026-01-29T19:15:29.260Z,McGeough's (The Bohemian),North,5.4,2022-12-23,"Adam, Fred, Matthew, Saul",7.3,7,7,7.5,7.6,7.28,"Discounted Padraig's rating as he failed to rate stickage. ""gas ⛽"" - Saul, ""mulled wine in the kettle"" - Matthew
+"
+91,2026-01-29T19:15:29.260Z,Darkey Kelley's,South (City),7,2025-01-25,"Fred, Kevin, Matthew, Saul",7.3,7.3,7.1,6.9,7.8,7.28,
+92,2026-01-29T19:15:29.260Z,Kodiak,South (City),6.3,2023-05-18,"Kevin, Martin, Matthew, Saul, Sophie",6.9,7,6.7,7.7,8,7.26,"""I can BEARly contain my excitement"" - Martin, ""me gusta"" - Saul"
+93,2026-01-29T19:15:29.260Z,The Duke,South (City),5.8,2022-08-21,"Adam, Cam, Fred, Martin, Saul",7.4,7.5,6.2,7.2,7.9,7.24,
+94,2026-01-29T19:15:29.260Z,The Barbers Bar,North,6.4,2025-05-10,"Adam, Alan, Cam, Martin, Rachael, Sadhbh D",7.5,7,6.5,6.7,8.5,7.24,"""I love the dogs"" - Sadhbh D, ""Pathway pint"" - Martin"
+95,2026-01-29T19:15:29.260Z,The Cat and Cage,North,5.4,2022-06-27,"Fred, Kevin, Martin, Saul",7.7,7,6.6,6.8,8.1,7.24,"A little on the thin side and no real creaminess in the head. Taste is of a good quality and having the option of setting up a tab is nice. Stickage and Head to Body Ratio (HBD) were let downs. Pizza is top quality (not taken into our scores but good to note) and there’s a very handsome barman named Manus. Non-descript, average pint aside from a standout malty taste. Very solid pub character consisting of friendly staff and calming jazz/funk playing in the background. Decor was a little too bougie bar-like for my tastes. Pub is very comfortable and nice. Good atmosphere for a Monday afternoon."
+96,2026-01-29T19:15:29.260Z,Keelings,North,6.2,2023-12-10,"Alan, Fred, Kevin, Martin, Matthew, Padraig, Saul",7.4,7.2,7.9,8,5.6,7.22,"""I’ve missed the groove, I was shitting too much. I wanted to dance but my bowels have foiled me once again. Their was a live band when I arrived yet upon post my bottom wipe it was no more. I saw the drums packing up and the cables rolled. My bowel might be empty but so is my heart"" - Martin, ""No comment on hand dryers"" - Padraig"
+97,2026-01-29T19:15:29.260Z,Frank Ryan's,North (City),6,,"Adam, Fred, Martin, Saul",6.8,6.9,7.1,7.5,7.8,7.22,"""Better than Decarteret I suppose"" - Martin, ""it is dark in here"" - Saul"
+98,2026-01-29T19:15:29.260Z,Whelan's,South (City),5.9,2022-07-28,"Adam, Cam, Martin, Saul",6.8,7,6.5,7.3,8.4,7.2,
+99,2026-01-29T19:15:29.260Z,The Auld Triangle,North (City),4.5,,"Adam, Fred, Padraig, Saul",7.6,7.3,5.3,7.9,7.9,7.2,"""had to stand love the ra vibe"" - Padraig"
+100,2026-01-29T19:15:29.260Z,O'Neill's (Suffolk St.),South (City),6,,"Adam, Martin, Matthew, Saul",7.7,7.6,6.2,7.4,7.1,7.2,"""this is a pub"" - Saul, ""Johnny Sexton has his own taps"" - Matthew"
+101,2026-01-29T19:15:29.260Z,Ryan's,South (City),6,2022-07-28,"Adam, Cam, Martin, Saul",7,7,7.5,6.6,7.8,7.18,
+102,2026-01-29T19:15:29.260Z,John Kavanagh The Gravediggers,North,6.1,2024-07-14,"Adam, Cam, Fred, Kevin, Mark, Martin, Podge, Sadhbh N, Saul, Rachael",7.3,7.2,6.7,7.3,7.4,7.18,
+103,2026-01-29T19:15:29.260Z,Brewdock,North (City),6.5,2024-10-04,"Cam, Fred, Kevin, Mark, Matthew, Sadhbh N, Saul",7.4,7.4,6.5,7.5,7.1,7.18,
+104,2026-01-29T19:15:29.260Z,The Bloody Stream,North,6.6,2025-02-01,"Adam, Cam, Fred, Kevin, Matthew, Padraig",7.3,7.1,6.9,7.2,7.4,7.18,"""I didn't fall asleep this time"" - Padraig"
+105,2026-01-29T19:15:29.260Z,Harry's on the Green**,South (City),,,"Adam, Cameron, Fred, Mark, Saul",7.6,7.5,6.7,7.2,6.9,7.18,
+106,2026-01-29T19:15:29.260Z,Kealy's,North,6.2,2024-01-08,"Kevin, Martin, Padraig, Saul",7.7,6.8,5.8,7.8,7.7,7.16,"""Annual clash of clan's conference"" - Martin, ""Yummy food"" - Padraig"
+107,2026-01-29T19:15:29.260Z,The Watermill Bar,North,5.9,2022-11-11,"Cam, Mark, Martin,  Manus, Podge",7.3,7.8,6.4,7.7,6.6,7.16,
+108,2026-01-29T19:15:29.260Z,The Crowbar,South (City),6.5,2022-11-22,"Mark, Martin, Matthew, Saul",6,6.5,8.2,8,7.1,7.16,
+109,2026-01-29T19:15:29.260Z,The Lord Edward,South (City),6.5,2025-01-25,"Cameron, Fred, Kevin, Mark, Matthew, Sadhbh N, Saul, Sophie",7.8,7.4,5.5,7,8.1,7.16,Rating may be invalid as Fred failed to rate H2B
+110,2026-01-29T19:15:29.260Z,Delaney's ,North (City),5.5,,"Mark, Martin, Padraig, Saul",7.2,7.2,6.6,7.3,7.4,7.14,"Possible invalid rating as Saul did not rate stickage. ""suit of armour"" - Martin, ""too many lamps"" - Padraig, ""robot wars"" - Saul"
+111,2026-01-29T19:15:29.260Z,The Viscount,North,5.5,2022-09-23,"Martin, Matthew, Saul, Sophie",7.4,7,7.4,7.6,6.2,7.12,
+112,2026-01-29T19:15:29.260Z,Peter's Pub,South (City),,2025-11-08,"Cam, Kevin, Ruairí, Saul",7.4,7.2,6.4,7.3,7.2,7.1,"""bambino queue too long"" - Kevin, ""Accidentally ordered two pints of Guinness"" - Ruairí, ""extra pub points for the fact that we all got stools"" - Cam"
+113,2026-01-29T19:15:29.260Z,James Connolly's,North (City),5.75,2022-11-24,"Adam, Cam, Mark, Martin",7,7.2,7,7.2,7,7.08,
+114,2026-01-29T19:15:29.260Z,The Christchurch Inn,South (City),6.7,2025-01-25,"Cam, Kevin, Matthew, Sadhbh N, Saul, Sophie",7.6,7.1,7.2,7.5,6,7.08,
+115,2026-01-29T19:15:29.260Z,O'Donoghue's (Suffolk Street),South (City),7.3,2025-11-08,"Cam, Kevin, Ruairí, Saul",7.1,6.8,6.7,7.6,7.2,7.08,"""this is one of the warmest pubs I've ever sat in. lovely smoking balcony tho. we got chatting to a nice French man named Jules"" - Kevin, ""I'm a sweaty mess and this pint is cooling me"" - Cam"
+116,2026-01-29T19:15:29.260Z,Brannigans,North (City),5.7,,"Alan, Matthew, Saul, Sophie",6.7,6.6,7.6,7.8,6.7,7.08,"""This place smells so bad"" - Sophie, ""small pub with a weird smell"" - Matthew"
+117,2026-01-29T19:15:29.260Z,The Cedar,North,5.35,2022-11-11,"Cam, Mark, Martin, Podge",7.4,6.9,7,7.3,6.7,7.06,
+118,2026-01-29T19:15:29.260Z,O'Reilly's (Sandymount),South,6.2,2024-02-04,"Fred, Kevin, Martin, Matthew, Padraig, Saul, Sophie",7.4,7.3,6.8,6.6,7.2,7.06,"""lots of sport nik naks"" - Padraig"
+119,2026-01-29T19:15:29.260Z,The Wicked Wolf,South,,2024-02-04,"Fred, Kevin, Mark, Padraig, Saul, Sophie",7.3,6.5,7.1,7.4,7,7.06,"""bar not a pub"" - Padraig, ""It smells like fire in here and the toilets stink"" - Sophie"
+120,2026-01-29T19:15:29.260Z,Lloyd's,North (City),5.5,2024-10-04,"Cam, Fred, Mark, Sadhbh N, Saul",6.8,6.9,7,7.1,7.5,7.06,"""toooones"" - Saul, ""welcomed in through the side door"" - Sadhbh N"
+121,2026-01-29T19:15:29.260Z,Blackbird,South,6.7,2024-12-07,"Fred, Kevin, Sadhbh D, Sophie",7.3,6.8,6.8,7.2,7.2,7.06,"""Not only is the music too loud but the tables are massive so no one can hear each other"" - Kevin, ""Happy Birthday Sophie"" - Sadhbh D, ""Nice bar but too loud"" - Sophie"
+122,2026-01-29T19:15:29.260Z,Grace's,South (City),6.1,2023-05-18,"Cameron, Kevin, Matthew, Saul, Sophie",7.2,7.4,5.6,7.6,7.4,7.04,"""This is the greatest pub I have ever been to, the only negative is that Martin is not here to experience this exceptional abode of Guinness sorcery"" - Cameron"
+123,2026-01-29T19:15:29.260Z,Egan's,South (City),6.9,2025-08-15,"Adam, Cam, Fred, Kevin, Martin, Matthew, Padraig, Sadhbh N, Saul, Sophie, Thomas",7.4,6.9,6.3,7.4,7.2,7.04,"""The woke mob can produce a decent pint but they know how to charge"" - Martin, ""sweatyyy"" - Sadhbh N, ""second pint was better"" - Thomas, ""For this establishment, it's a way better pint than you expect"" - Adam and Lily, ""Liverpool 4 Bournemouth 2"" - Adam, ""Too warm and no way to dry your hands in bathroom"" - Padraig"
+124,2026-01-29T19:15:29.260Z,Bleecker Street Bar,North,6.9,2025-11-16,"Kevin, Martin, Saul, Sophie SB",7.4,6.6,6.5,7.6,7.1,7.04,"""bottom of the list so she is"" - Martin"
+125,2026-01-29T19:15:29.260Z,Guinness Storehouse Gravity Bar*,South (City),0,,"Mark, Martin, Matthew, Saul",6.7,7,6.8,7.2,7.5,7.04,"Possibly invalid rating as Saul failed to rate stickage. ""decent view tbf"" - Saul, ""much busier so worse quality of pint but made up for by great view"" - Matthew, ""sour sour, happy hour, I did devour. Dower, dower, not a wower. Served to me in a Guinness tower"" - Martin"
+126,2026-01-29T19:15:29.260Z,The Lighthouse,South,5.8,2022-10-15,"Cam, Mark, Martin, Matthew, Podge, Saul, Sophie",6.6,6.9,7.1,6.9,7.6,7.02,
+127,2026-01-29T19:15:29.260Z,The Roundabout,North,5.75,2023-11-25,"Adam, Fred, Kevin, Martin, Saul",7.3,7,7.4,7.7,5.7,7.02,"""GIMME TAZA"" - Martin"
+128,2026-01-29T19:15:29.260Z,Molloy's,North (City),5.7,2024-10-04,"Cam, Fred, Kevin, Mark, Matthew, Sadhbh N, Saul, Sophie",7.1,7.4,5.9,7.5,7.2,7.02,"""prime location"" - Sadhbh N"
+129,2026-01-29T19:15:29.260Z,O'Regan's,South (City),,2025-03-09,"Adam, Fred, Mia, Saul, Sophie",7.6,7.7,6.8,7.5,5.5,7.02,"""Minus points for being uncomfortable, dark and being the same dude who owns hogans"" - Sophie, ""I like the old movies they have on but they always the same"" - Mia"
+130,2026-01-29T19:15:29.260Z,The Findlater,North,5.7,,"Adam, Martin, Matthew, Saul",7,7.3,6.9,7.2,6.7,7.02,"""bathroom smelled nice"" - Matthew, ""3 oysters and a Guinness for €11.50!!!!"""
+131,2026-01-29T19:15:29.260Z,Lucky's,South (City),6.1,,"Cameron, Matthew, Saul, Sophie",7.2,7.3,7.3,6.7,6.6,7.02,"""meh pub"" - Saul, ""A nice bar, a lovely night :)"" - Sophie, ""Loyle fucking carner"" - Matthew"
+132,2026-01-29T19:15:29.260Z,The Bernard Shaw,North,5.9,2022-07-01,"Adam, Cam, Fred, Martin, Saul",6.6,6.7,7.2,7.3,7.2,7,
+133,2026-01-29T19:15:29.260Z,Jack O Rourke's,South,,2024-02-04,"Adam, Kevin, Mark, Martin, Saul",6.9,6.3,7.3,7.2,7.3,7,"""narnia"" - Adam"
+134,2026-01-29T19:15:29.260Z,Crowes,South,6.6,2024-12-18,"Alan, Cam, Kevin, Manus, Mark, Martin, Matthew, Sadhbh N, Saul",7.5,7,5.9,7.2,7.4,7,"Possibly invalid rating as Manus failed to rate pub character. ""hiccup Joe"" - Alan, ""open fire"" - Sadhbh N, ""Alan can't hack it"" - Martin"
+135,2026-01-29T19:15:29.260Z,Clonliffe House ,North,5,,"Alan, Cameron, Mark, Padraig, Saul",7.2,6.9,6.7,7.4,6.8,7,"""top gear"" - Saul, ""Dead pub glad al got a bad pint"" - Padraig, ""Mr. Phelan, take me to Bargain Town"" - Martin"
+136,2026-01-29T19:15:29.260Z,Walters,South,6.6,2025-06-27,"Cam, Martin, Matthew, Saul",7.3,7.2,6.2,7.3,6.9,6.98,"""Roll n Roll"" - Martin"
+137,2026-01-29T19:15:29.260Z,The Raheny Inn,North,5.75,2022-11-11,"Cam, Mark, Martin,  Manus, Podge",5.8,6.1,7.3,7.3,8.3,6.96,
+138,2026-01-29T19:15:29.260Z,Grainger's Hanlons Corner,North,6.5,2025-07-19,"Adam, Cam, Kevin, Mark, Martin, Matthew, Saul",7,7.2,6.6,7.4,6.6,6.96,"""woman rugby tackled me"" - Cam"
+139,2026-01-29T19:15:29.260Z,The Gin Palace,North (City),6.9,2025-11-27,"Cam, Kevin, Martin, Saul, Sophie SB",6.5,6.9,7.4,7,7,6.96,"""stunning looking x"" - Martin, ""cozy candlelit dinner"" - Cam"
+140,2026-01-29T19:15:29.260Z,Brú (Fairview)**,North,5.4,2022-08-02,"Cam, Fred, Kevin, Martin",7.5,7.3,6.7,6.5,6.7,6.94,"""slurpy, sloppy shellfish - Martin"
+141,2026-01-29T19:15:29.260Z,The Bald Eagle,North,5.8,2022-12-23,"Adam, Cameron, Fred, Matthew, Saul, Sophie",7.3,7.1,6.3,6.8,7.2,6.94,"Padraig's rating removed as he failed to rate stickage. ""Bob Marley"" - Saul, ""Very watery head, did not appreciate. Tasted nice though, a solid 7 of a pub"" - Sophie, ""Enya was behind the bar"" - Matthew"
+142,2026-01-29T19:15:29.260Z,Corrigans,South,6.2,2024-12-07,"Adam, Cam, Fred, Kevin, Mark, Rachael, Sadhbh D, Sadhbh N, Saul, Sophie",6.5,6.8,6.9,6.9,7.6,6.94,"""Rob Kearnage is framed on the wall, speaks for itself"" - Sadhbh N, ""happy birthday Sophie 2"" - Sadhbh D, ""yup leeds"" - Sophie, ""LEEDS LEEDS LEEDS"" - Kevin, ""We all hate Leeds scum"" - Saul"
+143,2026-01-29T19:15:29.260Z,McDaids,South (City),7.5,2025-11-08,"Cam, Kevin, Ruairí, Saul",7.7,7.3,4.3,7.5,7.9,6.94,"""Feels like a little known secret. Tho it is pricey"" - Kevin, ""I like it here"" - Ruairi, ""This pub seems to be frequented by 50 year old cougars. Bit small"" - Cam"
+144,2026-01-29T19:15:29.260Z,Phil Ryan's Hogan Stand,North,,,"Cameron, Fred, Padraig, Saul",7.4,7.1,4.8,7.5,7.9,6.94,"""too many brits"" - Padraig"
+145,2026-01-29T19:15:29.260Z,Gilbert and Wright,North,6.6,2023-12-10,"Alan, Fred, Kevin, Martin, Matthew, Padraig, Saul",7.1,7.2,6.2,7.2,6.9,6.92,"""goooooooooooooaaaaaaallllllllllllllll!!!!!!!!"" - Martin, ""Hand dryer is not up to standard"" - Padraig"
+146,2026-01-29T19:15:29.260Z,Pawn Shop,South (City),6.95,2024-09-06,"Cam, Kevin, Mark, Martin",7.1,7,7,7,6.5,6.92,"""they made us wait outside for no reason and I had to pee"" - Cameron, ""this was Sophies graduation night"" - Kevin, ""Ceiling sweat dripped into my pint, more please"" - Martin"
+147,2026-01-29T19:15:29.260Z,The Wiley Fox,North (City),6.7,2024-10-04,"Kevin, Mark, Matthew, Sadhbh N, Saul",6.8,6.8,6.4,7.2,7.4,6.92,
+148,2026-01-29T19:15:29.260Z,Plunkets,North (City),6.8,2025-11-27,"Cam, Fred, Matthew N, Mia, Sadhbh D, Saul, Sophie SB",6.3,7,7.2,7.1,7,6.92,"""Saul had but a sip of his pint left and the nice waitress came over to demand he had more. Goated spot"" - Cam, ""live music"" - Mia"
+149,2026-01-29T19:15:29.260Z,Davy Byrne's,South (City),6,,"Adam, Cameron, Martin, Matthew, Saul",7.4,7.5,6.2,7.5,6,6.92,"""shite pub"" - Saul, ""North face uniform"" - Matthew, ""Davy Byrne has me burning down the house"" - Martin"
+150,2026-01-29T19:15:29.260Z,Mary Mac's,South,6.7,2024-12-18,"Alan, Kevin, Manus, Mark, Martin, Matthew, Ruairí, Sadhbh N, Saul, Sophie",6.8,6.2,6.4,7.2,8,6.92,"""pub smells subtly like sewage and liquorice"" - Manus, ""The only gay in the village is..."" - Martin, ""mini eggs"" - Sadhbh N, ""The Mini egg machine elevated this place"" - Sophie"
+151,2026-01-29T19:15:29.260Z,Blackbanks,North,6.2,2024-08-15,"Cameron, Kevin, Mark, Matthew",6.6,7.1,5.7,7.4,7.6,6.88,
+152,2026-01-29T19:15:29.260Z,Kavanaghs The Temple,North,6.9,2025-11-16,"Alan, Cam, Kevin, Martin, Saul, Sophie SB",7.3,7.4,6.4,7.1,6.1,6.86,"""hash"" - Cam, ""bottom of the list so she is"" - Martin"
+153,2026-01-29T19:15:29.260Z,Horse Show House,South,6.9,2024-12-18,"Alan, Cam, Kevin, Mark, Martin, Matthew, Saul, Sophie",6.9,6.9,6.7,7.5,6.2,6.84,"""no workman's please. Pint too cold to taste"" - Cam, ""There are two girls here, sitting opposite each other, drinking red wine and reading intermezzo"" - Sophie, ""Granite tables and no beer mats has annoyed me"" - Alan, ""Horse Cock Lounge"" - Martin"
+154,2026-01-29T19:15:29.260Z,Piper's Corner,North (City),5.8,2022-11-13,"Adam, Martin, Podge, Saul",7.2,6.2,5.8,7.7,7.2,6.82,
+155,2026-01-29T19:15:29.260Z,The Swan,South (City),5.9,2022-06-30,"Cam, Fred, Kevin, Martin, Manus, Saul",7.2,7.2,5.8,8.2,5.6,6.8,
+156,2026-01-29T19:15:29.260Z,Juno,North,5.2,2022-12-10,"Adam, Fred, Martin, Matthew, Padraig, Saul, Sophie",7,7.2,6.4,6.7,6.7,6.8,"""bar man did good pints, bar woman did bad pints"" - Matthew, ""yummy smokes"" - Padraig"
+157,2026-01-29T19:15:29.260Z,Strand House,North,5.9,2024-03-22,"Cam, Fred, Matthew, Saul",7.3,6.5,6.3,6.9,7,6.8,Possibly invalid rating as Fred didn't include his H2B - averaged based off the remaining three
+158,2026-01-29T19:15:29.260Z,Sheehan's,South (City),6.2,,"Adam, Cameron, Fred, Mark, Saul",6.7,6.9,6,7.1,7.3,6.8,
+159,2026-01-29T19:15:29.260Z,O'Connells (Howth),North,5.2,,"Adam, Manus, Matthew, Saul",7.5,7.3,5.5,7.2,6.5,6.8,"""this is a pub"" - Saul, ""toilet smells awful"" - Matthew, ""quite a generic spot"" - Manus"
+160,2026-01-29T19:15:29.260Z,The Grand Social,North (City),5.8,2022-07-13,"Adam, Cam, Fred, Martin, Saul",7.5,7.2,6.5,5.1,7.5,6.76,
+161,2026-01-29T19:15:29.260Z,Sandymount House,South,5.75,2024-02-04,"Fred, Kevin, Martin, Matthew, Padraig, Saul, Sophie",6.9,6.7,6.4,7.7,6,6.74,"""More like a living room than a pub"" - Padraig"
+162,2026-01-29T19:15:29.260Z,The Lotts,North (City),6.8,2025-11-27,"Cam, Fred, Kevin, Saul, Sophie SB",7.1,6.4,7.6,6.5,6.1,6.74,"""Great pint but this the type of pub you bring your mam to for Sunday lunch"" - Kevin"
+163,2026-01-29T19:15:29.260Z,The Oarsman,South,5.7,2022-11-13,"Adam, Martin, Podge, Saul",7.2,6.9,5.6,6.9,7,6.72,
+164,2026-01-29T19:15:29.260Z,Foley's Bar,South (City),6.8,2024-07-13,"Adam, Cam, Fred, Kevin, Martin, Saul",6.8,7.1,6.2,7.8,5.7,6.72,"""resembles WATER at times"" - Cam"
+165,2026-01-29T19:15:29.260Z,The Ref Pub,North,6,2025-11-16,"Alan, Kevin, Martin, Saul",7,6.5,6.6,7.6,5.9,6.72,"""scary spot (fearing for my life)"" - Alan, ""feared for my life in here"" - Saul, ""I've heard of drinking to get legless but this is ridiculous"" - Martin"
+166,2026-01-29T19:15:29.261Z,Brickyard,South,5.7,,"Manus, Mark, Martin, Matthew, Saul",6.4,6.6,6.8,7.5,6.3,6.72,"""little bit USA for my taste. Not the Texas redneck type either, the hipster city vibe"" - Martin, ""I want to try the €28 beer"" - Matthew, ""Feels very contrived and corporate, typical southside"" - Manus"
+167,2026-01-29T19:15:29.261Z,The Cobblestone ,North (City),,,"Cameron, Mark, Padraig, Saul",6.3,4.5,7.3,7.8,7.6,6.7,"Martin's rating removed as he failed to rate stick. ""average pub average pint"" - Padraig"
+168,2026-01-29T19:15:29.261Z,Bruxelles,South (City),7.6,2025-11-08,"Cam, Kevin, Ruairí, Saul",6.1,6.1,5,7.8,8.2,6.64,"""low ceilings make me feel like the green giant from the ads"" - Cam, ""I expected better from a pub of this stature. Also the low ceiling downstairs feels like it'd cave in if you pushed it hard enough"" - Kevin"
+169,2026-01-29T19:15:29.261Z,Neary's,South (City),7.25,2025-11-08,"Cam, Kevin, Ruairí, Saul",6.5,6.8,6.3,7.8,5.8,6.64,"""I felt poor in this pub"" - Kevin, ""spooky smoking area"" - Cam, ""I like it but I think I am an outlier"" - Ruairí"
+170,2026-01-29T19:15:29.261Z,Dawson Lounge,South (City),7.2,2025-11-08,"Cam, Kevin, Martin, Ruairí, Saul",6.2,6.4,4.8,7.3,8.4,6.62,"""I like the vibe"" - Ruairí, ""smol gaff and I love it"" - Cam, ""pint was more sour than the barman's BO"" - Martin"
+171,2026-01-29T19:15:29.261Z,Doyle's Corner,South (City),5.8,2022-12-23,"Adam, Fred, Matthew, Padraig, Saul, Sophie",6.3,6.4,6.7,6.8,6.7,6.58,"Possible invalid rating as Fred did not rate pub character. ""My pint had more bubbles in it that a child’s 10th birthday party - disgraceful. Tastes a bit like you’ve had a night of Guinness and then vomited it up again"" - Fred, ""too much swank not for the boys"" - Padraig, ""Kevin thinks it's okay to be racist"" - Matthew"
+172,2026-01-29T19:15:29.261Z,The Yacht,North,5.8,2022-09-09,"Adam, Cam, Martin, Podge",6.5,6.4,5.4,6.9,7.6,6.56,
+173,2026-01-29T19:15:29.261Z,Ciss Maddens,South (City),6.5,2024-05-05,"Alan, Cameron, Kevin, Martin, Matthew, Saul, Sophie",7.3,6.8,5.6,6.4,6.7,6.56,
+174,2026-01-29T19:15:29.261Z,J. W. Sweetman's,South (City),5.9,2022-07-23,"Adam, Cam, Fred, Saul",6.6,6.7,5.6,6.6,7.3,6.56,
+175,2026-01-29T19:15:29.261Z,Mullet's,North (City),6,2024-10-04,"Cam, Fred, Mark, Sadhbh N, Saul, Sophie",6.8,6.8,6,6.9,6.2,6.54,"""There's a pistol on the wall I think that's cool"" - Cam, ""Can't tell if the ra memorabilia makes this place better or worse"" - Sophie, ""I was kinda scared I'd be kneecapped ngl"" - Sadhbh N"
+176,2026-01-29T19:15:29.261Z,Pantibar,North (City),6.8,2024-11-02,"Adam, Cam, Kevin, Martin",6.4,6.4,5.6,7.3,7,6.54,
+177,2026-01-29T19:15:29.261Z,The Back Page,North,6,2022-12-23,"Adam, Matthew, Padraig, Saul",6.4,6.5,5,7.7,7.1,6.54,"Possibly invalid rating as Saul did not rate stickage. ""martins infinite bar of coins"" - Saul, ""festive jingle of coins"" - Padraig"
+178,2026-01-29T19:15:29.261Z,The Bridge 1859,South,6.8,2024-12-18,"Alan, Kevin, Manus, Ruairí, Saul",6.7,6.9,7,7.5,4.5,6.52,"""Ster"" - Alan, ""Ballsbridge"" - Ruairí"
+179,2026-01-29T19:15:29.261Z,Slattery's,South,6,2022-11-13,"Adam, Mark, Martin, Podge, Saul",6.3,6.4,5.9,5.9,8,6.5,
+180,2026-01-29T19:15:29.261Z,The Abbey Tavern,North,5.5,,"Adam, Manus, Matthew, Saul",6.8,6.6,6.4,7.4,5.3,6.5,"""quite a generic spot"" - Manus, ""a guy from Mount Temple works here"" - Matthew"
+181,2026-01-29T19:15:29.261Z,Fitzgerald's Bar,South (City),7.3,2024-12-28,"Alan, Fred, Kevin, Matthew, Saul, Sophie",6.6,6.6,6,6.9,6.3,6.48,"""that pint tasted of nothing"" - Sophie"
+182,2026-01-29T19:15:29.261Z,Portobello Bar,South (City),6.5,2024-12-07,"Adam, Cam, Fred, Kevin, Rachael, Sadhbh N, Saul, Sophie",7.1,6.4,6,6.3,6.4,6.44,"""minus friend points for saul. A truly evil individual."" - Adam, ""Utter posh nonsense"" - Kevin, ""the brunch looks overpriced"" - Sadhbh N"
+183,2026-01-29T19:15:29.261Z,J.T. Pim's,South (City),5.6,2022-06-30,"Cam, Fred, Kevin, Martin, Saul",7.2,7,6.7,6.4,4.8,6.42,
+184,2026-01-29T19:15:29.261Z,The Ramble Inn,North,,2023-12-10,"Alan, Kevin, Matthew, Padraig",7,6.6,6.7,7.7,4,6.4,
+185,2026-01-29T19:15:29.261Z,The Oval,North (City),,2024-12-28,"Alan, Kevin, Matthew N, Mia, Paul Byrne, Saul, Sophie",6.3,6.7,4.8,6.5,7.6,6.38,"""yay live music"" - Mia, ""live music helps sometimes but a poor selection"" - Paul Byrne, ""tourist pub. Big flex ""est 1820, rebuilt after the 1916 rising"""" - Sophie, ""no seats upstairs cunts"" - Alan"
+186,2026-01-29T19:15:29.261Z,Merrion Inn,South,6.7,2024-02-04,"Fred, Kevin, Mark, Martin, Matthew, Padraig, Saul, Sophie",7,6.4,6,7,5.3,6.34,"""terraces off the dart line near Connolly type beat"" - Padraig"
+187,2026-01-29T19:15:29.261Z,The Vintage Inn,South,5.6,2022-11-13,"Adam, Martin, Podge, Saul",5.9,6.5,4,7.3,7.8,6.3,
+188,2026-01-29T19:15:29.261Z,Guinness Storehouse Stoutie*,South (City),0,,"Mark, Martin, Matthew, Saul",7.2,7.3,6,8.2,2.8,6.3,"""cute flick of the boys"" - Matthew, ""sour sour, happy hour, I did devour. Dower, dower, not a wower. Served to me in a Guinness tower"" - Martin"
+189,2026-01-29T19:15:29.261Z,O’Neill's (Dun Laoghaire),South,5.2,2022-10-15,"Cam, Martin, Matthew, Podge, Sophie",6.2,6.1,5.6,7.2,6.3,6.28,
+190,2026-01-29T19:15:29.261Z,John's Bar & Haberdashery,South (City),6.2,2024-11-22,"Cam, Fred, Kevin, Martin, Ruairí, Saul",5.9,6.5,5.7,7.2,6,6.26,"""Wheelie Gonzales"" - Martin, ""I like the songs, skateboaridng is gay"" - Cam"
+191,2026-01-29T19:15:29.261Z,Murray's,North (City),6.2,,"Alan, Matthew, Saul, Sophie",6.7,6.6,5.6,7.4,5,6.26,"Notably everyone rated pub character a 5. ""Tourist trap"" - Sophie"
+192,2026-01-29T19:15:29.261Z,Beaumont House,North,5.7,2022-06-25,"Adam, Kevin, Martin, Saul",7,6.3,6,6.2,5.5,6.2,"The pint had a distinct coffee taste with a nice creamy head, a little too cabonated and just a fraction colder than I like it. The first sip was an absolute delight but quicky declined as we continued drinking. Pub had a quiet atmosphere focused on the GAA match. Staff were nice and good craic, pub smells like eggs and the carpet's a little past its sell-by-date."
+193,2026-01-29T19:15:29.261Z,The Sugarclub,South (City),,,"Alan, Martin, Padraig, Saul",6.5,6.6,3.2,7.5,6.6,6.08,"""funny innit"" - Saul, ""funny funny"" - Padraig"
+194,2026-01-29T19:15:29.261Z,The Comet,North,5.5,2022-06-25,"Adam, Fred, Kevin, Martin, Saul",5.6,6.6,7.1,6.3,4.4,6,"Super slow service, which led to a flat pint. It really does feel like a crap Irish pub in Benidorm. Pint was sloppy, thin and too cold but the texture improved as I drank. Fred's comment was ""nice clean glass"", which is weird to me. Overall a mediocre pint with an almost sickly taste .The pub was busy and yet unwelcoming - The Comet is best for food which we are not taking into account for our scores (this is a guinness ranking after all)."
+195,2026-01-29T19:15:29.261Z,Bootleg**,South (City),6.5,2025-02-08,"Adam, Cam, Kevin, Martin, Saul",5.9,5.3,5.9,6.5,5.8,5.88,"""1 second in: Daddy kind of likey
+5 seconds in: Daddy somewhat likely
+30 seconds in: Daddy no likey
+1 minute in: Daddy hatey"" - Martin"
+196,2026-01-29T19:15:29.261Z,The Pavilion Bar,South (City),5.9,2025-01-30,"Fred, Kevin, Matthew, Sophie",6.2,5.7,4.9,6.9,5.5,5.84,
+197,2026-01-29T19:15:29.261Z,The Merry Cobbler,South,5.8,2022-11-13,"Adam, Martin, Podge, Saul",5.2,5.4,4.8,6.1,7.7,5.84,
+198,2026-01-29T19:15:29.261Z,R.I.O.T,South (City),5.9,2022-10-22,"Adam, Mark, Martin, Saul",6.3,6,6.7,5,5,5.8,
+199,2026-01-29T19:15:29.261Z,Wigwam,North (City),6.6,2025-11-07,"Cam, Fred, Kevin, Rebecca, Sophie SB",7.2,5.8,5.4,4.5,5.6,5.7,
+200,2026-01-29T19:15:29.261Z,The Bar With No Name,South (City),6.5,2024-02-10,"Cam, Fred, Kevin, Matthew",6.7,5.8,3.1,7.2,5.5,5.66,
+201,2026-01-29T19:15:29.261Z,Dublin One Hotel*,North,6.8,2025-11-16,"Alan, Cam, Kevin, Martin, Saul, Sophie SB",6,6.2,6.1,6.4,3.5,5.64,"""gorilla warfare"" - Sophie SB, ""gorilla warfare"" - Saul, ""gorillas in the mist"" - Alan, ""gorilla theory"" - Kevin"
+202,2026-01-29T19:15:29.261Z,The Green Room Bar,North (City),7,2025-11-02,"Adam, Fred, Kevin, Rebecca",4.3,4.6,6.3,5.8,6.8,5.56,"""Shit pint but would actually recommend this pub for before gigs in the 3arena, they always play whatever band is on"" - Kevin, ""Yucky"" - Adam"
+203,2026-01-29T19:15:29.261Z,Copperface Jack's,South (City),6,2022-10-25,"Cam, Mark, Martin, Saul",4.7,5.9,5.7,3.5,7.5,5.46,
+204,2026-01-29T19:15:29.261Z,Idlewild / The Market Bar,South (City),7.25,2025-11-08,"Cam, Kevin, Martin, Saul",5.7,6.3,4.1,5.2,5.4,5.34,"""comfy sofa is a welcome addition to this night"" - Cam, ""idle pints are the devil's workshop"" - Martin, ""got given a plastic cup and everyone else got a glass. fucking shafted"" - Kevin"
+205,2026-01-29T19:15:29.261Z,Hartigans,South (City),6.9,2025-03-08,"Cam, Kevin, Mia, Sadhbh D",6.2,5.8,6.9,6.3,1.3,5.3,"""Quite watery, price point is high for what it is, saved by the stickage and H2B this pint was mid"" - Cam, ""bartender shouted at Riya. Also mine and Kevin's chairs were too short and lilys was too long"" - Mia, ""I feel like I'm in a GAA changing room"" - Sadhbh D, ""Worst skidmark I've ever seen in a pub toilet"" - Kevin"
+206,2026-01-29T19:15:29.261Z,Flannery's,South (City),6,2022-10-01,"Adam, Alan, Martin, Saul",4.4,4.8,4.3,5.9,5.2,4.92,
+207,2026-01-29T19:15:29.261Z,Airport Cafe Bar*,North,6.4,,"Adam, Fred, Padraig, Saul",3.5,5.5,4.5,6.6,2.9,4.6,"""we are not in a pub"" - Padraig"
+208,2026-01-29T19:15:29.261Z,The Shakespeare,North (City),5,2022-07-23,"Adam, Cam, Martin, Saul",3.6,6,3.6,2,5.3,4.1,
+209,2026-01-29T19:15:29.261Z,*Definitely not a pub,,,,,,,,,,,
+210,2026-01-29T19:15:29.261Z,**Closed down,,,,,,,,,,,
