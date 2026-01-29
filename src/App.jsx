@@ -209,10 +209,20 @@ function App() {
       parseFloat(formData.pubCharacter)
     ) / 5
 
+    // Get the next available ID
+    const { data: maxIdResult } = await supabase
+      .from('pub_ratings')
+      .select('id')
+      .order('id', { ascending: false })
+      .limit(1)
+
+    const nextId = (maxIdResult?.[0]?.id || 0) + 1
+
     // Save to Supabase
     const { data, error } = await supabase
       .from('pub_ratings')
       .insert([{
+        id: nextId,
         pub_name: formData.pubName,
         location: formData.location,
         price: parseFloat(formData.price) || null,
