@@ -312,11 +312,13 @@ function App() {
       return { category: cat, pub: sorted[0] }
     })
 
-    // Price stats
-    const pricesValid = validPubs.filter(p => typeof p.Price === 'number')
-    const avgPrice = pricesValid.reduce((sum, p) => sum + p.Price, 0) / pricesValid.length
-    const minPrice = Math.min(...pricesValid.map(p => p.Price))
-    const maxPrice = Math.max(...pricesValid.map(p => p.Price))
+    // Price stats - filter out zero/null prices
+    const pricesValid = validPubs.filter(p => typeof p.Price === 'number' && p.Price > 0)
+    const avgPrice = pricesValid.length > 0 ? pricesValid.reduce((sum, p) => sum + p.Price, 0) / pricesValid.length : 0
+    const cheapestPub = pricesValid.length > 0 ? pricesValid.reduce((min, p) => p.Price < min.Price ? p : min, pricesValid[0]) : null
+    const mostExpensivePub = pricesValid.length > 0 ? pricesValid.reduce((max, p) => p.Price > max.Price ? p : max, pricesValid[0]) : null
+    const minPrice = cheapestPub?.Price || 0
+    const maxPrice = mostExpensivePub?.Price || 0
 
     // Location stats
     const locationCounts = {}
@@ -326,7 +328,7 @@ function App() {
     })
     const topLocations = Object.entries(locationCounts).sort((a, b) => b[1] - a[1]).slice(0, 5)
 
-    return { scoreRanges, categoryAvgs, topByCategory, avgPrice, minPrice, maxPrice, topLocations, totalPubs: validPubs.length }
+    return { scoreRanges, categoryAvgs, topByCategory, avgPrice, minPrice, maxPrice, cheapestPub, mostExpensivePub, topLocations, totalPubs: validPubs.length }
   }
 
   if (loading) {
@@ -793,10 +795,12 @@ function App() {
                 <div className="price-stat">
                   <span className="price-label">Cheapest</span>
                   <span className="price-value">€{stats.minPrice.toFixed(2)}</span>
+                  {stats.cheapestPub && <span className="price-pub">{stats.cheapestPub['Pub Name']}</span>}
                 </div>
                 <div className="price-stat">
                   <span className="price-label">Most Expensive</span>
                   <span className="price-value">€{stats.maxPrice.toFixed(2)}</span>
+                  {stats.mostExpensivePub && <span className="price-pub">{stats.mostExpensivePub['Pub Name']}</span>}
                 </div>
               </div>
             </div>
