@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -1348,4 +1352,263 @@ body {
 
 .delete-btn:hover {
   background: #CC0000;
+}
+
+/* Enhanced Mobile Responsive */
+@media (max-width: 640px) {
+  #root {
+    padding: 1rem 0.75rem;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+  }
+
+  /* Tabs scroll horizontally on small screens */
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    justify-content: flex-start;
+    gap: 0;
+    padding-bottom: 2px;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    flex-shrink: 0;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  /* Table improvements */
+  .table-container {
+    margin: 0 -0.75rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .rankings-table th,
+  .rankings-table td {
+    padding: 0.5rem 0.375rem;
+    font-size: 0.8125rem;
+  }
+
+  .rankings-table th {
+    font-size: 0.5625rem;
+  }
+
+  /* Hide more columns on small screens */
+  .col-date {
+    display: none;
+  }
+
+  /* Alumni table - hide attendance and invested columns */
+  .alumni-table th:nth-child(5),
+  .alumni-table td:nth-child(5),
+  .alumni-table th:nth-child(6),
+  .alumni-table td:nth-child(6) {
+    display: none;
+  }
+
+  /* History table adjustments */
+  .rankings-table th:nth-child(4),
+  .rankings-table td:nth-child(4) {
+    display: none;
+  }
+
+  /* Smaller rank badges */
+  .rank-badge {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+  }
+
+  /* Score badge */
+  .score-badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  /* Stats cards */
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .stat-card {
+    padding: 0.75rem;
+  }
+
+  .stat-icon {
+    font-size: 1.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.625rem;
+  }
+
+  .stat-value {
+    font-size: 0.8125rem;
+  }
+
+  .stat-detail {
+    font-size: 0.625rem;
+  }
+
+  /* Form improvements */
+  .add-rating-container {
+    padding: 1rem;
+  }
+
+  .rating-form {
+    padding: 1rem;
+  }
+
+  .form-grid {
+    gap: 0.75rem;
+  }
+
+  .slider-group label {
+    font-size: 0.875rem;
+  }
+
+  /* Alumni header */
+  .alumni-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .alumni-subtitle {
+    font-size: 0.875rem;
+  }
+
+  /* Alumni expanded pubs */
+  .alumni-pubs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alumni-pubs-list h4 {
+    font-size: 0.875rem;
+  }
+
+  /* Expand arrow */
+  .expand-arrow {
+    font-size: 0.6rem;
+  }
+
+  .alumni-name {
+    font-size: 0.8125rem;
+  }
+
+  /* Modal */
+  .modal {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .modal-pub-name {
+    font-size: 1.25rem;
+  }
+
+  .modal-score-value {
+    font-size: 2rem;
+  }
+
+  .modal-category {
+    grid-template-columns: 1fr 60px 32px;
+    gap: 0.5rem;
+  }
+
+  .modal-category-label {
+    font-size: 0.75rem;
+  }
+
+  /* Insights page */
+  .stats-grid {
+    gap: 1rem;
+  }
+
+  .stats-card h3 {
+    font-size: 1rem;
+  }
+
+  .price-stats {
+    gap: 0.5rem;
+  }
+
+  .price-stat {
+    padding: 0.5rem;
+  }
+
+  .price-label {
+    font-size: 0.75rem;
+  }
+
+  .price-value {
+    font-size: 1rem;
+  }
+
+  .price-pub {
+    font-size: 0.6875rem;
+  }
+
+  /* Category bars */
+  .cat-bar-container {
+    grid-template-columns: 50px 1fr 32px;
+    font-size: 0.75rem;
+  }
+
+  /* Top by category */
+  .top-by-category {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .category-winner {
+    padding: 0.75rem;
+  }
+
+  .winner-category {
+    font-size: 0.6875rem;
+  }
+
+  .winner-pub {
+    font-size: 0.875rem;
+  }
+
+  .winner-score {
+    font-size: 1rem;
+  }
+
+  /* Location list */
+  .location-item {
+    font-size: 0.875rem;
+  }
+
+  /* Controls */
+  .controls {
+    gap: 0.5rem;
+  }
+
+  .search-input,
+  .filter-select {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* No results message */
+  .no-results {
+    font-size: 0.875rem;
+    padding: 2rem 1rem;
+  }
 }
