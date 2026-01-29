@@ -169,6 +169,35 @@ function App() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
+  const handleDeleteRating = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this rating?')) return
+
+    const { error } = await supabase
+      .from('pub_ratings')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      console.error('Error deleting rating:', error)
+      alert('Failed to delete rating')
+      return
+    }
+
+    // Remove from local state
+    const updatedPubs = pubData.filter(pub => pub.id !== id)
+    setPubData(updatedPubs)
+    setAlumniData(calculateAlumniStats(updatedPubs))
+  }
+
+  // Get submissions sorted by date (most recent first)
+  const getSubmissionsByDate = () => {
+    return [...pubData].sort((a, b) => {
+      const dateA = a['Date of Visit'] || ''
+      const dateB = b['Date of Visit'] || ''
+      return dateB.localeCompare(dateA)
+    })
+  }
+
   const handleSubmitRating = async (e) => {
     e.preventDefault()
 
@@ -340,6 +369,12 @@ function App() {
           onClick={() => setActiveTab('stats')}
         >
           Insights
+        </button>
+        <button
+          className={`tab ${activeTab === 'history' ? 'active' : ''}`}
+          onClick={() => setActiveTab('history')}
+        >
+          History
         </button>
       </nav>
 
@@ -783,6 +818,51 @@ function App() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'history' && (
+        <div>
+          <div className="alumni-header">
+            <h2>Submission History</h2>
+            <p className="alumni-subtitle">All ratings ordered by date</p>
+          </div>
+
+          <div className="table-container">
+            <table className="rankings-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Pub Name</th>
+                  <th>Score</th>
+                  <th>Submitted By</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getSubmissionsByDate().map((pub) => (
+                  <tr key={pub.id}>
+                    <td>{formatDate(pub['Date of Visit'])}</td>
+                    <td>{pub['Pub Name']}</td>
+                    <td>
+                      <span className="score-badge">
+                        {typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}
+                      </span>
+                    </td>
+                    <td>{pub['Submitted By'] || pub['Alumni Present'] || 'Unknown'}</td>
+                    <td>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteRating(pub.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
