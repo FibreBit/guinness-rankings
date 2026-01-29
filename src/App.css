@@ -422,11 +422,85 @@ body {
 /* Alumni Table */
 .alumni-table .alumni-name {
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .alumni-table .money {
   color: #00C853;
   font-weight: 600;
+}
+
+.expand-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+  color: #757575;
+}
+
+.expand-arrow.expanded {
+  transform: rotate(90deg);
+}
+
+.alumni-pubs-list {
+  padding: 1rem;
+}
+
+.alumni-pubs-list h4 {
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.alumni-pubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.alumni-pub-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.alumni-pub-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alumni-pub-name {
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.25rem;
+}
+
+.alumni-pub-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.alumni-pub-location {
+  color: #757575;
+}
+
+.alumni-pub-score {
+  background: #4F46E5;
+  color: #fff;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.alumni-pub-price {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #00C853;
+  font-weight: 500;
 }
 
 /* Modal */

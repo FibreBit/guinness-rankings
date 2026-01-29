@@ -13,6 +13,7 @@ function App() {
   const [expandedRow, setExpandedRow] = useState(null)
   const [selectedPub, setSelectedPub] = useState(null)
   const [showAddRating, setShowAddRating] = useState(false)
+  const [expandedAlumni, setExpandedAlumni] = useState(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -118,7 +119,8 @@ function App() {
         'Pubs Visited': data.visits.length,
         'Average Pub Score': avgScore,
         'Attendance Record': data.visits.length / pubs.length,
-        'Money Invested': data.totalSpent
+        'Money Invested': data.totalSpent,
+        'visits': data.visits
       }
     }).sort((a, b) => b['Pubs Visited'] - a['Pubs Visited'])
   }
@@ -574,19 +576,49 @@ function App() {
               <tbody>
                 {alumniData.map((alumni, index) => {
                   const rank = index + 1
+                  const isExpanded = expandedAlumni === alumni.Alumni
                   return (
-                    <tr key={index} className={getRankClass(rank)}>
-                      <td className="col-rank">
-                        <span className={`rank-badge ${getRankClass(rank)}`}>{rank}</span>
-                      </td>
-                      <td className="alumni-name">{alumni.Alumni}</td>
-                      <td>{alumni['Pubs Visited']}</td>
-                      <td>
-                        <span className="score-badge">{typeof alumni['Average Pub Score'] === 'number' ? alumni['Average Pub Score'].toFixed(2) : 'N/A'}</span>
-                      </td>
-                      <td>{typeof alumni['Attendance Record'] === 'number' ? (alumni['Attendance Record'] * 100).toFixed(0) : 'N/A'}%</td>
-                      <td className="money">€{typeof alumni['Money Invested'] === 'number' ? alumni['Money Invested'].toFixed(2) : 'N/A'}</td>
-                    </tr>
+                    <Fragment key={index}>
+                      <tr
+                        className={`${getRankClass(rank)} clickable-row`}
+                        onClick={() => setExpandedAlumni(isExpanded ? null : alumni.Alumni)}
+                      >
+                        <td className="col-rank">
+                          <span className={`rank-badge ${getRankClass(rank)}`}>{rank}</span>
+                        </td>
+                        <td className="alumni-name">
+                          <span className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}>▶</span>
+                          {alumni.Alumni}
+                        </td>
+                        <td>{alumni['Pubs Visited']}</td>
+                        <td>
+                          <span className="score-badge">{typeof alumni['Average Pub Score'] === 'number' ? alumni['Average Pub Score'].toFixed(2) : 'N/A'}</span>
+                        </td>
+                        <td>{typeof alumni['Attendance Record'] === 'number' ? (alumni['Attendance Record'] * 100).toFixed(0) : 'N/A'}%</td>
+                        <td className="money">€{typeof alumni['Money Invested'] === 'number' ? alumni['Money Invested'].toFixed(2) : 'N/A'}</td>
+                      </tr>
+                      {isExpanded && (
+                        <tr className="expanded-row">
+                          <td colSpan="6">
+                            <div className="alumni-pubs-list">
+                              <h4>Pubs Rated by {alumni.Alumni}</h4>
+                              <div className="alumni-pubs-grid">
+                                {alumni.visits.map((pub, i) => (
+                                  <div key={i} className="alumni-pub-card">
+                                    <div className="alumni-pub-name">{pub['Pub Name']}</div>
+                                    <div className="alumni-pub-details">
+                                      <span className="alumni-pub-location">{pub.Location}</span>
+                                      <span className="alumni-pub-score">{typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}</span>
+                                    </div>
+                                    {pub.Price > 0 && <div className="alumni-pub-price">€{pub.Price.toFixed(2)}</div>}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
                   )
                 })}
               </tbody>
