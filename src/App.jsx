@@ -20,7 +20,7 @@ function App() {
     location: '',
     price: '',
     date: new Date().toISOString().split('T')[0],
-    alumniPresent: '',
+    submittedBy: '',
     taste: 7,
     texture: 7,
     stickage: 7,
@@ -48,6 +48,7 @@ function App() {
           'Price': row.price,
           'Date of Visit': row.date_of_visit,
           'Alumni Present': row.alumni_present,
+          'Submitted By': row.submitted_by,
           'Taste': row.taste,
           'Texture': row.texture,
           'Stickage ': row.stickage,
@@ -80,6 +81,7 @@ function App() {
     const alumniMap = {}
 
     pubs.forEach(pub => {
+      // Handle legacy data with comma-separated alumni
       const present = pub['Alumni Present']
       if (present) {
         present.split(',').forEach(name => {
@@ -92,6 +94,19 @@ function App() {
             alumniMap[trimmed].totalSpent += pub.Price || 0
           }
         })
+      }
+
+      // Handle new data with individual submitter
+      const submitter = pub['Submitted By']
+      if (submitter) {
+        const trimmed = submitter.trim()
+        if (trimmed && !alumniMap[trimmed]?.visits.includes(pub)) {
+          if (!alumniMap[trimmed]) {
+            alumniMap[trimmed] = { visits: [], totalSpent: 0 }
+          }
+          alumniMap[trimmed].visits.push(pub)
+          alumniMap[trimmed].totalSpent += pub.Price || 0
+        }
       }
     })
 
@@ -110,6 +125,10 @@ function App() {
 
   const locations = [...new Set(pubData.map(pub => pub.Location).filter(Boolean))].sort()
   const existingPubNames = [...new Set(pubData.map(pub => pub['Pub Name']).filter(Boolean))].sort()
+  const existingNames = [...new Set([
+    ...pubData.map(pub => pub['Submitted By']).filter(Boolean),
+    ...pubData.flatMap(pub => pub['Alumni Present']?.split(',').map(n => n.trim()) || []).filter(Boolean)
+  ])].sort()
 
   const getFilteredPubs = () => {
     let filtered = [...pubData]
@@ -169,7 +188,7 @@ function App() {
         location: formData.location,
         price: parseFloat(formData.price) || null,
         date_of_visit: formData.date,
-        alumni_present: formData.alumniPresent,
+        submitted_by: formData.submittedBy,
         taste: parseFloat(formData.taste),
         texture: parseFloat(formData.texture),
         stickage: parseFloat(formData.stickage),
@@ -192,7 +211,7 @@ function App() {
       'Location': formData.location,
       'Price': parseFloat(formData.price) || 0,
       'Date of Visit': formData.date,
-      'Alumni Present': formData.alumniPresent,
+      'Submitted By': formData.submittedBy,
       'Taste': parseFloat(formData.taste),
       'Texture': parseFloat(formData.texture),
       'Stickage ': parseFloat(formData.stickage),
@@ -212,7 +231,7 @@ function App() {
       location: '',
       price: '',
       date: new Date().toISOString().split('T')[0],
-      alumniPresent: '',
+      submittedBy: '',
       taste: 7,
       texture: 7,
       stickage: 7,
@@ -421,7 +440,8 @@ function App() {
                               </div>
                               <div className="expanded-meta">
                                 <p><strong>Date:</strong> {formatDate(pub['Date of Visit'])}</p>
-                                <p><strong>Alumni:</strong> {pub['Alumni Present']}</p>
+                                {pub['Submitted By'] && <p><strong>Rated by:</strong> {pub['Submitted By']}</p>}
+                                {pub['Alumni Present'] && <p><strong>Alumni:</strong> {pub['Alumni Present']}</p>}
                                 {pub.Comments && <p><strong>Comments:</strong> {pub.Comments}</p>}
                               </div>
                             </div>
@@ -456,20 +476,6 @@ function App() {
             const bigSpender = [...alumniData].filter(a => typeof a['Money Invested'] === 'number').sort((a, b) => b['Money Invested'] - a['Money Invested'])[0]
             const veteran = [...alumniData].filter(a => typeof a['Pubs Visited'] === 'number').sort((a, b) => b['Pubs Visited'] - a['Pubs Visited'])[0]
 
-            const appearanceCounts = {}
-            pubData.forEach(pub => {
-              const present = pub['Alumni Present']
-              if (present) {
-                present.split(',').forEach(name => {
-                  const trimmed = name.trim()
-                  if (trimmed) {
-                    appearanceCounts[trimmed] = (appearanceCounts[trimmed] || 0) + 1
-                  }
-                })
-              }
-            })
-            const topAppearances = Object.entries(appearanceCounts).sort((a, b) => b[1] - a[1])[0]
-
             return (
               <div className="stats-cards">
                 <div className="stat-card">
@@ -495,12 +501,6 @@ function App() {
                   <span className="stat-label">Big Spender</span>
                   <span className="stat-value">{bigSpender?.Alumni}</span>
                   <span className="stat-detail">€{bigSpender?.['Money Invested']?.toFixed(0)} invested</span>
-                </div>
-                <div className="stat-card">
-                  <span className="stat-icon">🏆</span>
-                  <span className="stat-label">Most Appearances</span>
-                  <span className="stat-value">{topAppearances?.[0]}</span>
-                  <span className="stat-detail">{topAppearances?.[1]} pub visits</span>
                 </div>
                 <div className="stat-card">
                   <span className="stat-icon">🍺</span>
@@ -618,13 +618,20 @@ function App() {
               </div>
 
               <div className="form-group full-width">
-                <label>Alumni Present</label>
+                <label>Your Name *</label>
                 <input
                   type="text"
-                  value={formData.alumniPresent}
-                  onChange={(e) => handleFormChange('alumniPresent', e.target.value)}
-                  placeholder="e.g., Adam, Cameron, Saul"
+                  value={formData.submittedBy}
+                  onChange={(e) => handleFormChange('submittedBy', e.target.value)}
+                  placeholder="Enter your name"
+                  list="names"
+                  required
                 />
+                <datalist id="names">
+                  {existingNames.map(name => (
+                    <option key={name} value={name} />
+                  ))}
+                </datalist>
               </div>
             </div>
 
@@ -827,14 +834,25 @@ function App() {
               </div>
             </div>
 
-            <div className="modal-alumni">
-              <span className="modal-detail-label">Alumni Present</span>
-              <div className="alumni-chips">
-                {selectedPub['Alumni Present']?.split(',').map((name, i) => (
-                  <span key={i} className="alumni-chip">{name.trim()}</span>
-                ))}
+            {selectedPub['Submitted By'] && (
+              <div className="modal-alumni">
+                <span className="modal-detail-label">Rated by</span>
+                <div className="alumni-chips">
+                  <span className="alumni-chip">{selectedPub['Submitted By']}</span>
+                </div>
               </div>
-            </div>
+            )}
+
+            {selectedPub['Alumni Present'] && (
+              <div className="modal-alumni">
+                <span className="modal-detail-label">Alumni Present</span>
+                <div className="alumni-chips">
+                  {selectedPub['Alumni Present']?.split(',').map((name, i) => (
+                    <span key={i} className="alumni-chip">{name.trim()}</span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {selectedPub.Comments && (
               <div className="modal-comments">
