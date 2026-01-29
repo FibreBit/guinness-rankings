@@ -12,6 +12,23 @@ function App() {
   const [locationFilter, setLocationFilter] = useState('all')
   const [expandedRow, setExpandedRow] = useState(null)
   const [selectedPub, setSelectedPub] = useState(null)
+  const [showAddRating, setShowAddRating] = useState(false)
+
+  // Form state
+  const [formData, setFormData] = useState({
+    pubName: '',
+    location: '',
+    price: '',
+    date: new Date().toISOString().split('T')[0],
+    alumniPresent: '',
+    taste: 7,
+    texture: 7,
+    stickage: 7,
+    headToBody: 7,
+    pubCharacter: 7,
+    comments: ''
+  })
+  const [formSubmitted, setFormSubmitted] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +42,10 @@ function App() {
 
         const pubSheet = workbook.Sheets['Pub Ratings']
         const pubJson = XLSX.utils.sheet_to_json(pubSheet)
-        setPubData(pubJson)
+
+        // Load any locally saved ratings
+        const savedRatings = JSON.parse(localStorage.getItem('localRatings') || '[]')
+        setPubData([...pubJson, ...savedRatings])
 
         const alumniSheet = workbook.Sheets['Alumni Stats']
         const alumniJson = XLSX.utils.sheet_to_json(alumniSheet)
@@ -43,6 +63,7 @@ function App() {
   }, [])
 
   const locations = [...new Set(pubData.map(pub => pub.Location).filter(Boolean))].sort()
+  const existingPubNames = [...new Set(pubData.map(pub => pub['Pub Name']).filter(Boolean))].sort()
 
   const getFilteredPubs = () => {
     let filtered = [...pubData]
@@ -79,6 +100,110 @@ function App() {
     return ''
   }
 
+  const handleFormChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleSubmitRating = (e) => {
+    e.preventDefault()
+
+    const overallScore = (
+      parseFloat(formData.taste) +
+      parseFloat(formData.texture) +
+      parseFloat(formData.stickage) +
+      parseFloat(formData.headToBody) +
+      parseFloat(formData.pubCharacter)
+    ) / 5
+
+    const newRating = {
+      'Pub Name': formData.pubName,
+      'Location': formData.location,
+      'Price': parseFloat(formData.price) || 0,
+      'Date of Visit': formData.date,
+      'Alumni Present': formData.alumniPresent,
+      'Taste': parseFloat(formData.taste),
+      'Texture': parseFloat(formData.texture),
+      'Stickage ': parseFloat(formData.stickage),
+      'Head to Body Ratio': parseFloat(formData.headToBody),
+      'Pub Character': parseFloat(formData.pubCharacter),
+      'Overall Score': overallScore,
+      'Comments': formData.comments,
+      '_isLocal': true
+    }
+
+    // Save to localStorage
+    const savedRatings = JSON.parse(localStorage.getItem('localRatings') || '[]')
+    savedRatings.push(newRating)
+    localStorage.setItem('localRatings', JSON.stringify(savedRatings))
+
+    // Update state
+    setPubData(prev => [...prev, newRating])
+
+    // Reset form
+    setFormData({
+      pubName: '',
+      location: '',
+      price: '',
+      date: new Date().toISOString().split('T')[0],
+      alumniPresent: '',
+      taste: 7,
+      texture: 7,
+      stickage: 7,
+      headToBody: 7,
+      pubCharacter: 7,
+      comments: ''
+    })
+
+    setFormSubmitted(true)
+    setTimeout(() => setFormSubmitted(false), 3000)
+  }
+
+  // Stats calculations
+  const getStats = () => {
+    const validPubs = pubData.filter(p => typeof p['Overall Score'] === 'number')
+
+    // Score distribution
+    const scoreRanges = { '9-10': 0, '8-9': 0, '7-8': 0, '6-7': 0, '<6': 0 }
+    validPubs.forEach(pub => {
+      const score = pub['Overall Score']
+      if (score >= 9) scoreRanges['9-10']++
+      else if (score >= 8) scoreRanges['8-9']++
+      else if (score >= 7) scoreRanges['7-8']++
+      else if (score >= 6) scoreRanges['6-7']++
+      else scoreRanges['<6']++
+    })
+
+    // Category averages
+    const categories = ['Taste', 'Texture', 'Stickage ', 'Head to Body Ratio', 'Pub Character']
+    const categoryAvgs = categories.map(cat => {
+      const valid = validPubs.filter(p => typeof p[cat] === 'number')
+      const avg = valid.reduce((sum, p) => sum + p[cat], 0) / valid.length
+      return { name: cat.replace(' ', ''), avg }
+    })
+
+    // Top pub by each category
+    const topByCategory = categories.map(cat => {
+      const sorted = [...validPubs].filter(p => typeof p[cat] === 'number').sort((a, b) => b[cat] - a[cat])
+      return { category: cat, pub: sorted[0] }
+    })
+
+    // Price stats
+    const pricesValid = validPubs.filter(p => typeof p.Price === 'number')
+    const avgPrice = pricesValid.reduce((sum, p) => sum + p.Price, 0) / pricesValid.length
+    const minPrice = Math.min(...pricesValid.map(p => p.Price))
+    const maxPrice = Math.max(...pricesValid.map(p => p.Price))
+
+    // Location stats
+    const locationCounts = {}
+    validPubs.forEach(pub => {
+      const loc = pub.Location || 'Unknown'
+      locationCounts[loc] = (locationCounts[loc] || 0) + 1
+    })
+    const topLocations = Object.entries(locationCounts).sort((a, b) => b[1] - a[1]).slice(0, 5)
+
+    return { scoreRanges, categoryAvgs, topByCategory, avgPrice, minPrice, maxPrice, topLocations, totalPubs: validPubs.length }
+  }
+
   if (loading) {
     return (
       <div style={{ padding: '50px', textAlign: 'center', color: '#000', backgroundColor: '#FEFDF5', minHeight: '100vh' }}>
@@ -95,6 +220,8 @@ function App() {
       </div>
     )
   }
+
+  const stats = getStats()
 
   return (
     <div className="app">
@@ -115,6 +242,18 @@ function App() {
           onClick={() => setActiveTab('alumni')}
         >
           Alumni Stats
+        </button>
+        <button
+          className={`tab ${activeTab === 'add' ? 'active' : ''}`}
+          onClick={() => setActiveTab('add')}
+        >
+          Add Rating
+        </button>
+        <button
+          className={`tab ${activeTab === 'stats' ? 'active' : ''}`}
+          onClick={() => setActiveTab('stats')}
+        >
+          Insights
         </button>
       </nav>
 
@@ -160,13 +299,16 @@ function App() {
                   return (
                     <Fragment key={index}>
                       <tr
-                        className={`${getRankClass(rank)} ${isExpanded ? 'expanded' : ''}`}
+                        className={`${getRankClass(rank)} ${isExpanded ? 'expanded' : ''} ${pub._isLocal ? 'local-rating' : ''}`}
                         onClick={() => setSelectedPub(pub)}
                       >
                         <td className="col-rank">
                           <span className={`rank-badge ${getRankClass(rank)}`}>{rank}</span>
                         </td>
-                        <td className="col-name">{pub['Pub Name']}</td>
+                        <td className="col-name">
+                          {pub['Pub Name']}
+                          {pub._isLocal && <span className="local-badge">New</span>}
+                        </td>
                         <td className="col-location">{pub.Location}</td>
                         <td className="col-score">
                           <span className="score-badge">{typeof pub['Overall Score'] === 'number' ? pub['Overall Score'].toFixed(2) : 'N/A'}</span>
@@ -239,7 +381,6 @@ function App() {
             <p className="alumni-subtitle">The dedicated Guinness researchers</p>
           </div>
 
-          {/* Stats Cards */}
           {alumniData.length > 0 && (() => {
             const validAlumni = alumniData.filter(a => typeof a['Average Pub Score'] === 'number')
             const harshest = [...validAlumni].sort((a, b) => a['Average Pub Score'] - b['Average Pub Score'])[0]
@@ -248,7 +389,6 @@ function App() {
             const bigSpender = [...alumniData].filter(a => typeof a['Money Invested'] === 'number').sort((a, b) => b['Money Invested'] - a['Money Invested'])[0]
             const veteran = [...alumniData].filter(a => typeof a['Pubs Visited'] === 'number').sort((a, b) => b['Pubs Visited'] - a['Pubs Visited'])[0]
 
-            // Count appearances from pub data
             const appearanceCounts = {}
             pubData.forEach(pub => {
               const present = pub['Alumni Present']
@@ -337,6 +477,238 @@ function App() {
                 })}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'add' && (
+        <div className="add-rating-container">
+          <div className="form-header">
+            <h2>Add New Rating</h2>
+            <p>Record a new pub visit and rating</p>
+          </div>
+
+          {formSubmitted && (
+            <div className="success-message">
+              Rating submitted successfully! View it in the Leaderboard.
+            </div>
+          )}
+
+          <form onSubmit={handleSubmitRating} className="rating-form">
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Pub Name *</label>
+                <input
+                  type="text"
+                  value={formData.pubName}
+                  onChange={(e) => handleFormChange('pubName', e.target.value)}
+                  placeholder="Enter pub name"
+                  list="pub-names"
+                  required
+                />
+                <datalist id="pub-names">
+                  {existingPubNames.map(name => (
+                    <option key={name} value={name} />
+                  ))}
+                </datalist>
+              </div>
+
+              <div className="form-group">
+                <label>Location *</label>
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) => handleFormChange('location', e.target.value)}
+                  placeholder="e.g., South (City)"
+                  list="locations"
+                  required
+                />
+                <datalist id="locations">
+                  {locations.map(loc => (
+                    <option key={loc} value={loc} />
+                  ))}
+                </datalist>
+              </div>
+
+              <div className="form-group">
+                <label>Price (€)</label>
+                <input
+                  type="number"
+                  step="0.10"
+                  value={formData.price}
+                  onChange={(e) => handleFormChange('price', e.target.value)}
+                  placeholder="5.90"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Date of Visit</label>
+                <input
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => handleFormChange('date', e.target.value)}
+                />
+              </div>
+
+              <div className="form-group full-width">
+                <label>Alumni Present</label>
+                <input
+                  type="text"
+                  value={formData.alumniPresent}
+                  onChange={(e) => handleFormChange('alumniPresent', e.target.value)}
+                  placeholder="e.g., Adam, Cameron, Saul"
+                />
+              </div>
+            </div>
+
+            <div className="scores-section">
+              <h3>Category Scores</h3>
+              <div className="score-sliders">
+                {[
+                  { key: 'taste', label: 'Taste' },
+                  { key: 'texture', label: 'Texture' },
+                  { key: 'stickage', label: 'Stickage' },
+                  { key: 'headToBody', label: 'Head to Body Ratio' },
+                  { key: 'pubCharacter', label: 'Pub Character' }
+                ].map(({ key, label }) => (
+                  <div className="score-slider" key={key}>
+                    <div className="slider-header">
+                      <label>{label}</label>
+                      <span className="slider-value">{formData[key]}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      step="0.1"
+                      value={formData[key]}
+                      onChange={(e) => handleFormChange(key, e.target.value)}
+                    />
+                    <div className="slider-labels">
+                      <span>1</span>
+                      <span>10</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="overall-preview">
+                <span className="preview-label">Overall Score Preview</span>
+                <span className="preview-score">
+                  {((parseFloat(formData.taste) + parseFloat(formData.texture) + parseFloat(formData.stickage) + parseFloat(formData.headToBody) + parseFloat(formData.pubCharacter)) / 5).toFixed(2)}
+                </span>
+              </div>
+            </div>
+
+            <div className="form-group full-width">
+              <label>Comments</label>
+              <textarea
+                value={formData.comments}
+                onChange={(e) => handleFormChange('comments', e.target.value)}
+                placeholder="Add any notes about this pint..."
+                rows="3"
+              />
+            </div>
+
+            <button type="submit" className="submit-btn">
+              Submit Rating
+            </button>
+          </form>
+        </div>
+      )}
+
+      {activeTab === 'stats' && (
+        <div className="stats-container">
+          <div className="stats-header">
+            <h2>Insights & Statistics</h2>
+            <p>Data from {stats.totalPubs} pub ratings</p>
+          </div>
+
+          <div className="stats-grid">
+            {/* Score Distribution */}
+            <div className="stats-card large">
+              <h3>Score Distribution</h3>
+              <div className="distribution-chart">
+                {Object.entries(stats.scoreRanges).map(([range, count]) => (
+                  <div className="dist-bar-container" key={range}>
+                    <span className="dist-label">{range}</span>
+                    <div className="dist-bar-bg">
+                      <div
+                        className="dist-bar-fill"
+                        style={{ width: `${(count / stats.totalPubs) * 100}%` }}
+                      />
+                    </div>
+                    <span className="dist-count">{count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Category Averages */}
+            <div className="stats-card large">
+              <h3>Category Averages</h3>
+              <div className="category-chart">
+                {stats.categoryAvgs.map(({ name, avg }) => (
+                  <div className="cat-bar-container" key={name}>
+                    <span className="cat-label">{name.replace('Stickage', 'Stickage').replace('HeadtoBodyRatio', 'H2B Ratio').replace('PubCharacter', 'Pub Char')}</span>
+                    <div className="cat-bar-bg">
+                      <div
+                        className="cat-bar-fill"
+                        style={{ width: `${(avg / 10) * 100}%` }}
+                      />
+                    </div>
+                    <span className="cat-value">{avg.toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Price Stats */}
+            <div className="stats-card">
+              <h3>Price Analysis</h3>
+              <div className="price-stats">
+                <div className="price-stat">
+                  <span className="price-label">Average</span>
+                  <span className="price-value">€{stats.avgPrice.toFixed(2)}</span>
+                </div>
+                <div className="price-stat">
+                  <span className="price-label">Cheapest</span>
+                  <span className="price-value">€{stats.minPrice.toFixed(2)}</span>
+                </div>
+                <div className="price-stat">
+                  <span className="price-label">Most Expensive</span>
+                  <span className="price-value">€{stats.maxPrice.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Locations */}
+            <div className="stats-card">
+              <h3>Top Locations</h3>
+              <div className="location-list">
+                {stats.topLocations.map(([loc, count], i) => (
+                  <div className="location-item" key={loc}>
+                    <span className="location-rank">{i + 1}</span>
+                    <span className="location-name">{loc}</span>
+                    <span className="location-count">{count} pubs</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Top by Category */}
+            <div className="stats-card full-width">
+              <h3>Best Pub by Category</h3>
+              <div className="top-by-category">
+                {stats.topByCategory.map(({ category, pub }) => (
+                  <div className="category-winner" key={category}>
+                    <span className="winner-category">{category.replace('Stickage ', 'Stickage')}</span>
+                    <span className="winner-pub">{pub?.['Pub Name'] || 'N/A'}</span>
+                    <span className="winner-score">{pub?.[category]?.toFixed(1) || 'N/A'}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
