@@ -1360,6 +1360,203 @@ body {
   }
 }
 
+/* Map Container */
+.map-container {
+  height: 500px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #E6E3D3;
+}
+
+.map-popup h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.map-popup .popup-location {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+  color: #757575;
+}
+
+.map-popup .popup-score {
+  margin: 0.5rem 0 0.25rem 0;
+  font-size: 0.875rem;
+  color: #000;
+}
+
+.map-popup .popup-score strong {
+  color: #3434EF;
+}
+
+.map-popup .popup-price {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #00C853;
+}
+
+/* Map Sections */
+.map-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #E6E3D3;
+}
+
+.map-section h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.map-section .section-subtitle {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  color: #757575;
+}
+
+/* Missing Pubs List */
+.missing-pubs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.missing-pub-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #FFF3E0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.missing-pub-name {
+  font-weight: 600;
+  color: #000;
+}
+
+.missing-pub-location {
+  color: #757575;
+  font-size: 0.75rem;
+}
+
+/* Confidence Table */
+.confidence-table {
+  font-size: 0.875rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.status-verified {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.status-badge.status-mapped {
+  background: #E3F2FD;
+  color: #1565C0;
+}
+
+.status-badge.status-generic {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+.status-badge.status-missing {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+/* Status Filter Buttons */
+.status-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.status-filter-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #E6E3D3;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.status-filter-btn:hover {
+  border-color: #000;
+}
+
+.status-filter-btn.active {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+
+.status-filter-btn.status-missing {
+  border-color: #FFCDD2;
+  color: #C62828;
+}
+
+.status-filter-btn.status-missing:hover,
+.status-filter-btn.status-missing.active {
+  background: #C62828;
+  border-color: #C62828;
+  color: #fff;
+}
+
+.status-filter-btn.status-generic {
+  border-color: #FFE0B2;
+  color: #E65100;
+}
+
+.status-filter-btn.status-generic:hover,
+.status-filter-btn.status-generic.active {
+  background: #E65100;
+  border-color: #E65100;
+  color: #fff;
+}
+
+.status-filter-btn.status-mapped {
+  border-color: #BBDEFB;
+  color: #1565C0;
+}
+
+.status-filter-btn.status-mapped:hover,
+.status-filter-btn.status-mapped.active {
+  background: #1565C0;
+  border-color: #1565C0;
+  color: #fff;
+}
+
+.status-filter-btn.status-verified {
+  border-color: #C8E6C9;
+  color: #2E7D32;
+}
+
+.status-filter-btn.status-verified:hover,
+.status-filter-btn.status-verified.active {
+  background: #2E7D32;
+  border-color: #2E7D32;
+  color: #fff;
+}
+
 /* Delete button */
 .delete-btn {
   background: #FF4444;
@@ -1632,6 +1829,11 @@ body {
   .no-results {
     font-size: 0.875rem;
     padding: 2rem 1rem;
+  }
+
+  /* Map */
+  .map-container {
+    height: 400px;
   }
 }
 

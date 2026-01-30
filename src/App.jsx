@@ -1,6 +1,43 @@
 import { useState, useEffect, Fragment } from 'react'
 import { supabase } from './supabaseClient'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
 import './App.css'
+
+// Fix for default marker icons in react-leaflet
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+})
+
+const OPENCAGE_API_KEY = '179498d6748a4481ac32428d59327069'
+
+// Geocode a pub name to get coordinates
+async function geocodePub(pubName, location) {
+  const query = `${pubName}, ${location || 'Dublin'}, Ireland`
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(query)}&key=${OPENCAGE_API_KEY}&countrycode=ie&limit=1`
+
+  try {
+    const response = await fetch(url)
+    const data = await response.json()
+
+    if (data.results && data.results.length > 0) {
+      const result = data.results[0]
+      return {
+        latitude: result.geometry.lat,
+        longitude: result.geometry.lng,
+        confidence: result.confidence
+      }
+    }
+    return null
+  } catch (error) {
+    console.error('Geocoding error:', error)
+    return null
+  }
+}
 
 function App() {
   const [pubData, setPubData] = useState([])
@@ -16,6 +53,7 @@ function App() {
   const [showAlumniPubs, setShowAlumniPubs] = useState(null)
   const [inlineProfile, setInlineProfile] = useState(null)
   const [newestMember, setNewestMember] = useState(null)
+  const [mapStatusFilter, setMapStatusFilter] = useState('all')
 
   // Form state
   const [formData, setFormData] = useState({
@@ -59,7 +97,10 @@ function App() {
           'Pub Character': row.pub_character,
           'Overall Score': row.overall_score,
           'Comments': row.comments,
-          'id': row.id
+          'id': row.id,
+          'Latitude': row.latitude,
+          'Longitude': row.longitude,
+          'GeocodeConfidence': row.geocode_confidence
         }))
 
         setPubData(transformedPubs)
@@ -318,6 +359,9 @@ function App() {
 
     const nextId = (maxIdResult?.[0]?.id || 0) + 1
 
+    // Geocode the pub to get coordinates for the map
+    const coords = await geocodePub(formData.pubName, formData.location)
+
     // Save to Supabase
     const { data, error } = await supabase
       .from('pub_ratings')
@@ -334,7 +378,10 @@ function App() {
         head_to_body_ratio: parseFloat(formData.headToBody),
         pub_character: parseFloat(formData.pubCharacter),
         overall_score: overallScore,
-        comments: formData.comments
+        comments: formData.comments,
+        latitude: coords?.latitude || null,
+        longitude: coords?.longitude || null,
+        geocode_confidence: coords?.confidence || null
       }])
       .select()
 
@@ -358,7 +405,10 @@ function App() {
       'Pub Character': parseFloat(formData.pubCharacter),
       'Overall Score': overallScore,
       'Comments': formData.comments,
-      'id': data[0]?.id
+      'id': data[0]?.id,
+      'Latitude': coords?.latitude || null,
+      'Longitude': coords?.longitude || null,
+      'GeocodeConfidence': coords?.confidence || null
     }
 
     setPubData(prev => [...prev, newRating])
@@ -487,6 +537,12 @@ function App() {
           onClick={() => setActiveTab('history')}
         >
           History
+        </button>
+        <button
+          className={`tab ${activeTab === 'map' ? 'active' : ''}`}
+          onClick={() => setActiveTab('map')}
+        >
+          Map
         </button>
       </nav>
 
@@ -1150,6 +1206,255 @@ function App() {
         </div>
       )}
 
+      {activeTab === 'map' && (
+        <div>
+          <div className="alumni-header">
+            <h2>Pub Map</h2>
+            <p className="alumni-subtitle">Explore {pubData.filter(p => p.Latitude && p.Longitude).length} visited pubs across Dublin</p>
+          </div>
+
+          <div className="map-container">
+            <MapContainer
+              center={[53.3498, -6.2603]}
+              zoom={12}
+              style={{ height: '100%', width: '100%' }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {pubData
+                .filter(pub => pub.Latitude && pub.Longitude)
+                .map((pub) => (
+                  <Marker
+                    key={pub.id}
+                    position={[pub.Latitude, pub.Longitude]}
+                  >
+                    <Popup>
+                      <div className="map-popup">
+                        <h3>{pub['Pub Name']}</h3>
+                        <p className="popup-location">{pub.Location}</p>
+                        {typeof pub['Overall Score'] === 'number' && (
+                          <p className="popup-score">Score: <strong>{pub['Overall Score'].toFixed(2)}</strong></p>
+                        )}
+                        {typeof pub.Price === 'number' && pub.Price > 0 && (
+                          <p className="popup-price">Price: €{pub.Price.toFixed(2)}</p>
+                        )}
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+            </MapContainer>
+          </div>
+
+          {/* Pubs Missing Coordinates */}
+          {(() => {
+            const GENERIC_LAT = 53.33306
+            const GENERIC_LNG = -6.24889
+            const missingPubs = pubData.filter(p =>
+              !p.Latitude || !p.Longitude ||
+              (Math.abs(p.Latitude - GENERIC_LAT) < 0.0001 && Math.abs(p.Longitude - GENERIC_LNG) < 0.0001)
+            )
+            if (missingPubs.length === 0) return null
+            return (
+              <div className="map-section">
+                <h3>Pubs Missing from Map ({missingPubs.length})</h3>
+                <p className="section-subtitle">These pubs need coordinates to appear on the map</p>
+                <div className="missing-pubs-list">
+                  {missingPubs.map(pub => (
+                    <div key={pub.id} className="missing-pub-item">
+                      <span className="missing-pub-name">{pub['Pub Name']}</span>
+                      <span className="missing-pub-location">{pub.Location}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          })()}
+
+          {/* All Pubs Coordinate Status */}
+          {(() => {
+            const GENERIC_LAT = 53.33306
+            const GENERIC_LNG = -6.24889
+
+            // Calculate status for each pub
+            const pubsWithStatus = pubData.map(pub => {
+              const isGeneric = pub.Latitude && pub.Longitude &&
+                Math.abs(pub.Latitude - GENERIC_LAT) < 0.0001 &&
+                Math.abs(pub.Longitude - GENERIC_LNG) < 0.0001
+              const isMissing = !pub.Latitude || !pub.Longitude
+
+              let status, statusClass
+              if (isMissing) {
+                status = 'Missing'
+                statusClass = 'status-missing'
+              } else if (isGeneric) {
+                status = 'Generic'
+                statusClass = 'status-generic'
+              } else if (pub.GeocodeConfidence && pub.GeocodeConfidence >= 8) {
+                status = 'Verified'
+                statusClass = 'status-verified'
+              } else {
+                status = 'Mapped'
+                statusClass = 'status-mapped'
+              }
+
+              return { ...pub, status, statusClass }
+            })
+
+            // Count by status
+            const counts = {
+              all: pubsWithStatus.length,
+              Missing: pubsWithStatus.filter(p => p.status === 'Missing').length,
+              Generic: pubsWithStatus.filter(p => p.status === 'Generic').length,
+              Mapped: pubsWithStatus.filter(p => p.status === 'Mapped').length,
+              Verified: pubsWithStatus.filter(p => p.status === 'Verified').length
+            }
+
+            // Filter and sort by name
+            const filteredPubs = pubsWithStatus
+              .filter(p => mapStatusFilter === 'all' || p.status === mapStatusFilter)
+              .sort((a, b) => a['Pub Name'].localeCompare(b['Pub Name']))
+
+            return (
+              <div className="map-section">
+                <h3>All Pubs - Coordinate Status</h3>
+
+                <div className="status-filters">
+                  <button
+                    className={`status-filter-btn ${mapStatusFilter === 'all' ? 'active' : ''}`}
+                    onClick={() => setMapStatusFilter('all')}
+                  >
+                    All ({counts.all})
+                  </button>
+                  <button
+                    className={`status-filter-btn status-missing ${mapStatusFilter === 'Missing' ? 'active' : ''}`}
+                    onClick={() => setMapStatusFilter('Missing')}
+                  >
+                    Missing ({counts.Missing})
+                  </button>
+                  <button
+                    className={`status-filter-btn status-generic ${mapStatusFilter === 'Generic' ? 'active' : ''}`}
+                    onClick={() => setMapStatusFilter('Generic')}
+                  >
+                    Generic ({counts.Generic})
+                  </button>
+                  <button
+                    className={`status-filter-btn status-mapped ${mapStatusFilter === 'Mapped' ? 'active' : ''}`}
+                    onClick={() => setMapStatusFilter('Mapped')}
+                  >
+                    Mapped ({counts.Mapped})
+                  </button>
+                  <button
+                    className={`status-filter-btn status-verified ${mapStatusFilter === 'Verified' ? 'active' : ''}`}
+                    onClick={() => setMapStatusFilter('Verified')}
+                  >
+                    Verified ({counts.Verified})
+                  </button>
+                </div>
+
+                <div className="table-container">
+                  <table className="rankings-table confidence-table">
+                    <thead>
+                      <tr>
+                        <th>Pub Name</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredPubs.map(pub => (
+                        <tr key={pub.id} className={pub.statusClass}>
+                          <td>{pub['Pub Name']}</td>
+                          <td>{pub.Location}</td>
+                          <td><span className={`status-badge ${pub.statusClass}`}>{pub.status}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )
+          })()}
+        </div>
+      )}
+
+      {selectedPub && (
+        <div className="modal-overlay" onClick={() => setSelectedPub(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedPub(null)}>×</button>
+
+            <div className="modal-header">
+              <h2>{selectedPub['Pub Name']}</h2>
+              <span className="modal-location">{selectedPub.Location}</span>
+            </div>
+
+            <div className="modal-score">
+              <span className="modal-score-value">{typeof selectedPub['Overall Score'] === 'number' ? selectedPub['Overall Score'].toFixed(2) : 'N/A'}</span>
+              <span className="modal-score-label">Overall Score</span>
+            </div>
+
+            <div className="modal-categories">
+              {[
+                { key: 'Taste', label: 'Taste' },
+                { key: 'Texture', label: 'Texture' },
+                { key: 'Stickage ', label: 'Stickage' },
+                { key: 'Head to Body Ratio', label: 'Head:Body Ratio' },
+                { key: 'Pub Character', label: 'Pub Character' }
+              ].map(cat => (
+                <div className="modal-category" key={cat.key}>
+                  <div className="modal-category-bar">
+                    <div
+                      className="modal-category-fill"
+                      style={{ width: `${((selectedPub[cat.key] || 0) / 10) * 100}%` }}
+                    />
+                  </div>
+                  <span className="modal-category-label">{cat.label}</span>
+                  <span className="modal-category-value">{typeof selectedPub[cat.key] === 'number' ? selectedPub[cat.key].toFixed(1) : 'N/A'}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="modal-details">
+              <div className="modal-detail">
+                <span className="modal-detail-label">Price</span>
+                <span className="modal-detail-value">€{typeof selectedPub.Price === 'number' ? selectedPub.Price.toFixed(2) : selectedPub.Price || 'N/A'}</span>
+              </div>
+              <div className="modal-detail">
+                <span className="modal-detail-label">Date Visited</span>
+                <span className="modal-detail-value">{formatDate(selectedPub['Date of Visit'])}</span>
+              </div>
+            </div>
+
+            {selectedPub['Submitted By'] && (
+              <div className="modal-alumni">
+                <span className="modal-detail-label">Rated by</span>
+                <div className="alumni-chips">
+                  <span className="alumni-chip">{selectedPub['Submitted By']}</span>
+                </div>
+              </div>
+            )}
+
+            {selectedPub['Alumni Present'] && (
+              <div className="modal-alumni">
+                <span className="modal-detail-label">Alumni Present</span>
+                <div className="alumni-chips">
+                  {selectedPub['Alumni Present']?.split(',').map((name, i) => (
+                    <span key={i} className="alumni-chip">{name.trim()}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedPub.Comments && (
+              <div className="modal-comments">
+                <span className="modal-detail-label">Comments</span>
+                <p>{selectedPub.Comments}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,0 +1,40 @@
+Pubs Missing Accurate Coordinates
+==================================
+Generated: 2026-01-30
+
+These pubs have generic "Dublin, Ireland" coordinates (53.33306, -6.24889)
+and will appear clustered in central Dublin on the map.
+
+To fix: Look up the pub on Google Maps, right-click to copy coordinates,
+then update in Supabase:
+
+  UPDATE pub_ratings
+  SET latitude = 53.XXXXX, longitude = -6.XXXXX
+  WHERE pub_name = 'Pub Name';
+
+
+REAL PUBS (10)
+--------------
+1. The Glimmerman - North
+2. Bar Rua - South (City)
+3. The Raheny Inn - North
+4. Darkey Kelley's - South (City)
+5. Brewdock - North (City)
+6. The Watermill Bar - North
+7. Ciss Maddens - South (City)
+8. Fitzgerald's Bar - South (City)
+9. The Pavilion Bar - South (City)
+10. The Green Room Bar - North (City)
+
+
+CLOSED / NOT REAL PUBS (9)
+--------------------------
+- Ukiyo** (closed)
+- The Bar (Guinness)** (closed)
+- Brú (Fairview)** (closed)
+- Harry's on the Green** (closed)
+- Bootleg** (closed)
+- Guinness Storehouse Gravity Bar* (tourist attraction)
+- Guinness Storehouse Stoutie* (tourist attraction)
+- Dublin One Hotel* (hotel bar)
+- Airport Cafe Bar* (airport)
