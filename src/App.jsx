@@ -48,6 +48,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [locationFilter, setLocationFilter] = useState('all')
   const [expandedRow, setExpandedRow] = useState(null)
+  const [selectedPub, setSelectedPub] = useState(null)
   const [showAddRating, setShowAddRating] = useState(false)
   const [expandedAlumni, setExpandedAlumni] = useState(null)
   const [showAlumniPubs, setShowAlumniPubs] = useState(null)
