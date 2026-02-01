@@ -15,6 +15,39 @@ L.Icon.Default.mergeOptions({
 
 const OPENCAGE_API_KEY = '179498d6748a4481ac32428d59327069'
 
+function normalizeLocation(loc) {
+  if (!loc) return loc
+  return loc.trim()
+}
+
+// Compute similarity ratio between two strings (0 to 1)
+function stringSimilarity(a, b) {
+  if (!a || !b) return 0
+  const normalize = (s) => s.trim().toLowerCase().replace(/[''`]/g, '')
+  const na = normalize(a)
+  const nb = normalize(b)
+  if (na === nb) return 1
+  if (na.includes(nb) || nb.includes(na)) return 0.9
+
+  // Levenshtein distance
+  const len1 = na.length
+  const len2 = nb.length
+  const dp = Array.from({ length: len1 + 1 }, (_, i) => {
+    const row = new Array(len2 + 1)
+    row[0] = i
+    return row
+  })
+  for (let j = 0; j <= len2; j++) dp[0][j] = j
+  for (let i = 1; i <= len1; i++) {
+    for (let j = 1; j <= len2; j++) {
+      const cost = na[i - 1] === nb[j - 1] ? 0 : 1
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost)
+    }
+  }
+  const maxLen = Math.max(len1, len2)
+  return maxLen === 0 ? 1 : 1 - dp[len1][len2] / maxLen
+}
+
 // Geocode a pub name to get coordinates
 async function geocodePub(pubName, location) {
   const query = `${pubName}, ${location || 'Dublin'}, Ireland`
@@ -71,6 +104,8 @@ function App() {
     comments: ''
   })
   const [formSubmitted, setFormSubmitted] = useState(false)
+  const [duplicateWarning, setDuplicateWarning] = useState(null)
+  const [pendingSubmission, setPendingSubmission] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,7 +121,7 @@ function App() {
         // Transform Supabase column names to match app's expected format
         const transformedPubs = pubRatings.map(row => ({
           'Pub Name': row.pub_name,
-          'Location': row.location,
+          'Location': normalizeLocation(row.location),
           'Price': row.price,
           'Date of Visit': row.date_of_visit,
           'Alumni Present': row.alumni_present,
@@ -234,8 +269,60 @@ function App() {
     ...pubData.flatMap(pub => pub['Alumni Present']?.split(',').map(n => n.trim()) || []).filter(Boolean)
   ])].sort()
 
+  const getAggregatedPubs = () => {
+    const groups = {}
+    pubData.forEach(pub => {
+      const key = (pub['Pub Name'] || '').trim().toLowerCase()
+      if (!key) return
+      if (!groups[key]) {
+        groups[key] = {
+          displayName: pub['Pub Name'],
+          location: pub.Location,
+          ratings: []
+        }
+      }
+      groups[key].ratings.push(pub)
+    })
+
+    return Object.values(groups).map(group => {
+      const ratings = group.ratings
+      const avg = (field) => {
+        const vals = ratings.map(r => r[field]).filter(v => typeof v === 'number')
+        return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null
+      }
+      const avgPrice = avg('Price')
+
+      // Count unique raters: individual submitters + alumni present across all rows
+      const raterSet = new Set()
+      ratings.forEach(r => {
+        if (r['Submitted By']) raterSet.add(r['Submitted By'].trim().toLowerCase())
+        if (r['Alumni Present']) {
+          r['Alumni Present'].split(',').forEach(n => {
+            const name = n.trim().toLowerCase()
+            if (name) raterSet.add(name)
+          })
+        }
+      })
+
+      return {
+        'Pub Name': group.displayName,
+        'Location': group.location,
+        'Price': avgPrice,
+        'Taste': avg('Taste'),
+        'Texture': avg('Texture'),
+        'Stickage ': avg('Stickage '),
+        'Head to Body Ratio': avg('Head to Body Ratio'),
+        'Pub Character': avg('Pub Character'),
+        'Overall Score': avg('Overall Score'),
+        _ratings: ratings,
+        _ratingCount: ratings.length,
+        _raterCount: raterSet.size
+      }
+    })
+  }
+
   const getFilteredPubs = () => {
-    let filtered = [...pubData]
+    let filtered = getAggregatedPubs()
 
     if (searchTerm) {
       filtered = filtered.filter(pub =>
@@ -340,18 +427,15 @@ function App() {
     })
   }
 
-  const handleSubmitRating = async (e) => {
-    e.preventDefault()
-
+  const doSubmitRating = async (submission) => {
     const overallScore = (
-      parseFloat(formData.taste) +
-      parseFloat(formData.texture) +
-      parseFloat(formData.stickage) +
-      parseFloat(formData.headToBody) +
-      parseFloat(formData.pubCharacter)
+      parseFloat(submission.taste) +
+      parseFloat(submission.texture) +
+      parseFloat(submission.stickage) +
+      parseFloat(submission.headToBody) +
+      parseFloat(submission.pubCharacter)
     ) / 5
 
-    // Get the next available ID
     const { data: maxIdResult } = await supabase
       .from('pub_ratings')
       .select('id')
@@ -360,26 +444,26 @@ function App() {
 
     const nextId = (maxIdResult?.[0]?.id || 0) + 1
 
-    // Geocode the pub to get coordinates for the map
-    const coords = await geocodePub(formData.pubName, formData.location)
+    const normalizedLocation = normalizeLocation(submission.location)
 
-    // Save to Supabase
+    const coords = await geocodePub(submission.pubName, normalizedLocation)
+
     const { data, error } = await supabase
       .from('pub_ratings')
       .insert([{
         id: nextId,
-        pub_name: formData.pubName,
-        location: formData.location,
-        price: parseFloat(formData.price) || null,
-        date_of_visit: formData.date,
-        submitted_by: formData.submittedBy,
-        taste: parseFloat(formData.taste),
-        texture: parseFloat(formData.texture),
-        stickage: parseFloat(formData.stickage),
-        head_to_body_ratio: parseFloat(formData.headToBody),
-        pub_character: parseFloat(formData.pubCharacter),
+        pub_name: submission.pubName,
+        location: normalizedLocation,
+        price: parseFloat(submission.price) || null,
+        date_of_visit: submission.date,
+        submitted_by: submission.submittedBy,
+        taste: parseFloat(submission.taste),
+        texture: parseFloat(submission.texture),
+        stickage: parseFloat(submission.stickage),
+        head_to_body_ratio: parseFloat(submission.headToBody),
+        pub_character: parseFloat(submission.pubCharacter),
         overall_score: overallScore,
-        comments: formData.comments,
+        comments: submission.comments,
         latitude: coords?.latitude || null,
         longitude: coords?.longitude || null,
         geocode_confidence: coords?.confidence || null
@@ -392,20 +476,19 @@ function App() {
       return
     }
 
-    // Add to local state with transformed format
     const newRating = {
-      'Pub Name': formData.pubName,
-      'Location': formData.location,
-      'Price': parseFloat(formData.price) || 0,
-      'Date of Visit': formData.date,
-      'Submitted By': formData.submittedBy,
-      'Taste': parseFloat(formData.taste),
-      'Texture': parseFloat(formData.texture),
-      'Stickage ': parseFloat(formData.stickage),
-      'Head to Body Ratio': parseFloat(formData.headToBody),
-      'Pub Character': parseFloat(formData.pubCharacter),
+      'Pub Name': submission.pubName,
+      'Location': normalizedLocation,
+      'Price': parseFloat(submission.price) || 0,
+      'Date of Visit': submission.date,
+      'Submitted By': submission.submittedBy,
+      'Taste': parseFloat(submission.taste),
+      'Texture': parseFloat(submission.texture),
+      'Stickage ': parseFloat(submission.stickage),
+      'Head to Body Ratio': parseFloat(submission.headToBody),
+      'Pub Character': parseFloat(submission.pubCharacter),
       'Overall Score': overallScore,
-      'Comments': formData.comments,
+      'Comments': submission.comments,
       'id': data[0]?.id,
       'Latitude': coords?.latitude || null,
       'Longitude': coords?.longitude || null,
@@ -415,7 +498,6 @@ function App() {
     setPubData(prev => [...prev, newRating])
     setAlumniData(calculateAlumniStats([...pubData, newRating]))
 
-    // Reset form
     setFormData({
       pubName: '',
       location: '',
@@ -432,6 +514,62 @@ function App() {
 
     setFormSubmitted(true)
     setTimeout(() => setFormSubmitted(false), 3000)
+  }
+
+  const handleSubmitRating = async (e) => {
+    e.preventDefault()
+
+    const SIMILARITY_THRESHOLD = 0.85
+    const normPubName = (formData.pubName || '').trim().toLowerCase().replace(/[''`]/g, '')
+    const normLocation = normalizeLocation(formData.location)
+    const normLocLower = (normLocation || '').trim().toLowerCase().replace(/[''`]/g, '')
+
+    // Check pub name similarity against existing pubs
+    for (const existing of existingPubNames) {
+      const existingNorm = (existing || '').trim().toLowerCase().replace(/[''`]/g, '')
+      if (existingNorm === normPubName) break // exact match is fine
+      const sim = stringSimilarity(formData.pubName, existing)
+      if (sim >= SIMILARITY_THRESHOLD) {
+        setDuplicateWarning({ type: 'pubName', existing, entered: formData.pubName })
+        setPendingSubmission({ ...formData, location: normLocation })
+        return
+      }
+    }
+
+    // Check location similarity against existing locations
+    for (const existing of locations) {
+      const existingNorm = (existing || '').trim().toLowerCase().replace(/[''`]/g, '')
+      if (existingNorm === normLocLower) break // exact match is fine
+      const sim = stringSimilarity(normLocation, existing)
+      if (sim >= SIMILARITY_THRESHOLD) {
+        setDuplicateWarning({ type: 'location', existing, entered: normLocation })
+        setPendingSubmission({ ...formData, location: normLocation })
+        return
+      }
+    }
+
+    await doSubmitRating({ ...formData, location: normLocation })
+  }
+
+  const handleDuplicateUseExisting = async () => {
+    if (!pendingSubmission || !duplicateWarning) return
+    const updated = { ...pendingSubmission }
+    if (duplicateWarning.type === 'pubName') {
+      updated.pubName = duplicateWarning.existing
+    } else {
+      updated.location = duplicateWarning.existing
+    }
+    setDuplicateWarning(null)
+    setPendingSubmission(null)
+    await doSubmitRating(updated)
+  }
+
+  const handleDuplicateKeepMine = async () => {
+    if (!pendingSubmission) return
+    const submission = { ...pendingSubmission }
+    setDuplicateWarning(null)
+    setPendingSubmission(null)
+    await doSubmitRating(submission)
   }
 
   // Stats calculations
@@ -597,7 +735,7 @@ function App() {
                         </td>
                         <td className="col-name">
                           {pub['Pub Name']}
-                          {pub._isLocal && <span className="local-badge">New</span>}
+                          {pub._raterCount > 1 && <span className="rating-count-badge">{pub._raterCount} raters</span>}
                         </td>
                         <td className="col-location">{pub.Location}</td>
                         <td className="col-score">
@@ -642,11 +780,39 @@ function App() {
                                   <span className="category-value">{typeof pub['Pub Character'] === 'number' ? pub['Pub Character'].toFixed(1) : 'N/A'}</span>
                                 </div>
                               </div>
-                              <div className="expanded-meta">
-                                <p><strong>Date:</strong> {formatDate(pub['Date of Visit'])}</p>
-                                {pub['Submitted By'] && <p><strong>Rated by:</strong> {pub['Submitted By']}</p>}
-                                {pub['Alumni Present'] && <p><strong>Alumni:</strong> {pub['Alumni Present']}</p>}
-                                {pub.Comments && <p><strong>Comments:</strong> {pub.Comments}</p>}
+                              {(() => {
+                                const names = new Set()
+                                pub._ratings.forEach(r => {
+                                  if (r['Submitted By']) names.add(r['Submitted By'].trim())
+                                  if (r['Alumni Present']) {
+                                    r['Alumni Present'].split(',').forEach(n => {
+                                      const name = n.trim()
+                                      if (name) names.add(name)
+                                    })
+                                  }
+                                })
+                                const raterNames = [...names].sort()
+                                return raterNames.length > 0 ? (
+                                  <div className="expanded-raters">
+                                    <strong>Raters:</strong>{' '}
+                                    <span className="rater-names">{raterNames.join(', ')}</span>
+                                  </div>
+                                ) : null
+                              })()}
+                              {pub._ratingCount > 1 && (
+                                <p className="avg-note">Averaged from {pub._ratingCount} individual ratings</p>
+                              )}
+                              <div className="individual-ratings">
+                                {pub._ratings.map((rating, ri) => (
+                                  <div key={ri} className="individual-rating">
+                                    <div className="individual-rating-header">
+                                      <strong>{rating['Submitted By'] || 'Group rating'}</strong>
+                                      <span className="individual-rating-date">{formatDate(rating['Date of Visit'])}</span>
+                                      <span className="score-badge small">{typeof rating['Overall Score'] === 'number' ? rating['Overall Score'].toFixed(2) : 'N/A'}</span>
+                                    </div>
+                                    {rating.Comments && <p className="individual-comment">{rating.Comments}</p>}
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           </td>
@@ -1061,6 +1227,32 @@ function App() {
               Submit Rating
             </button>
           </form>
+
+          {duplicateWarning && (
+            <div className="modal-overlay" onClick={() => { setDuplicateWarning(null); setPendingSubmission(null) }}>
+              <div className="modal" onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close" onClick={() => { setDuplicateWarning(null); setPendingSubmission(null) }}>×</button>
+                <div className="modal-header">
+                  <h2>Possible Duplicate</h2>
+                </div>
+                <div className="duplicate-warning-body">
+                  <p>
+                    Your {duplicateWarning.type === 'pubName' ? 'pub name' : 'location'} <strong>"{duplicateWarning.entered}"</strong> looks similar to an existing entry:
+                  </p>
+                  <p className="duplicate-existing">"{duplicateWarning.existing}"</p>
+                  <p>Did you mean to use the existing name?</p>
+                  <div className="duplicate-actions">
+                    <button className="submit-btn" onClick={handleDuplicateUseExisting}>
+                      Use "{duplicateWarning.existing}"
+                    </button>
+                    <button className="submit-btn ghost" onClick={handleDuplicateKeepMine}>
+                      Keep "{duplicateWarning.entered}"
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

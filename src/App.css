@@ -1948,3 +1948,111 @@ body {
   font-size: 0.85rem;
   margin-top: 0.25rem;
 }
+
+/* Rating count badge on aggregated pub rows */
+.rating-count-badge {
+  display: inline-block;
+  background: #3434EF;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15em 0.5em;
+  border-radius: 99px;
+  margin-left: 0.5em;
+  vertical-align: middle;
+}
+
+/* Rater names in expanded row */
+.expanded-raters {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.rater-names {
+  color: #555;
+}
+
+/* Averaged note in expanded row */
+.avg-note {
+  color: #757575;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0.75rem;
+  font-style: italic;
+}
+
+/* Individual ratings list in expanded row */
+.individual-ratings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.individual-rating {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.individual-rating-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.individual-rating-date {
+  color: #757575;
+  font-size: 0.85rem;
+}
+
+.individual-comment {
+  color: #555;
+  font-size: 0.9rem;
+  margin: 0.4rem 0 0;
+}
+
+.score-badge.small {
+  font-size: 0.8rem;
+  padding: 0.15em 0.5em;
+}
+
+/* Duplicate warning modal body */
+.duplicate-warning-body {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.duplicate-warning-body p {
+  margin: 0.5rem 0;
+}
+
+.duplicate-existing {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #3434EF;
+  margin: 1rem 0 !important;
+}
+
+.duplicate-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.duplicate-actions .submit-btn {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.submit-btn.ghost {
+  background: transparent;
+  color: #3434EF;
+  border: 2px solid #3434EF;
+}
+
+.submit-btn.ghost:hover {
+  background: rgba(52, 52, 239, 0.05);
+}
